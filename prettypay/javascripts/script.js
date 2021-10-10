@@ -10,6 +10,9 @@ const abortTransactionOptionalMessageSpan = document.getElementById('transaction
 const successfulTransactionModal = document.getElementById('transaction-successful-modal');
 const successfulTransactionOptionalMessageSpan = document.getElementById('transaction-successful-optional-message-span');
 
+const contactPostalAddress = document.getElementById('payment-contact-postal-address').parentElement;
+const contactEmail = document.getElementById('payment-contact-email').parentElement;
+
 let uniqueTransactionToken;
 
 if (document.readyState == 'loading') {
@@ -19,12 +22,21 @@ if (document.readyState == 'loading') {
 }
 
 const Prettypay = {
-    open: function(amount, { prefill = false, currency = '£' } = {}) {
+    open: function(amount, { prefill = false, currency = '£', askAddress = true, askEmail = true } = {}) {
         closeAnyModals();
         paymentForm.reset();
         if (amount <= 0) {
             Prettypay.abort('Error: The total charged is zero or less.');
         } else {
+            console.log(askAddress, askEmail)
+            if (askAddress === false) {
+                contactPostalAddress.classList.add('invisiblePP');
+                contactPostalAddress.setAttribute("required", "");
+            }
+            if (askEmail === false) {
+                contactEmail.classList.add('invisiblePP');
+                contactPostalAddress.setAttribute("required", "")
+            }
             openPaymentForm(amount, currency);
             if (prefill === true) prefillPaymentForm();
             preprocessPayment(amount, currency);
@@ -56,6 +68,7 @@ const Prettypay = {
 function prefillPaymentForm() {
     document.getElementsByClassName('text-in-modal')[0].innerHTML = 'This is the pre-filled version, for your convenience.<br>Just click the button!';
     document.getElementById('payment-contact-name').value = 'Adam Smith';
+    document.getElementById('payment-contact-postal-address').value= '10 High Road, Brighton, BN1, 1AA';
     document.getElementById('payment-contact-email').value = 'asmith@email.com';
     document.getElementById('payment-card-name').value = 'Mr A Smith';
     document.getElementById('payment-card-number').value = '4242 4242 4242 4242';

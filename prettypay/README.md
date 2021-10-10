@@ -1,16 +1,16 @@
 # Prettypay
 <br>
-Prettypay is a web development tool. It is a simple simulated payment processing system used with EJS pages. It is designed to be included within the parent directory.
+Prettypay is a web development tool. It is a simple simulated payment processing system used with javascript and EJS pages. It is designed to be included within the parent directory.
 <br><br>
 
 ## To use
-First, the Prettypay directory must be cloned and placed in the root file that you wish to use it in.<br>
+First, the Prettypay directory must be cloned and placed in the parent file that you wish to use it in.<br>
 
-On index.js (or whatever you have named the server), you must include the lines:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`const prettypayRouter = require('./prettypay/routes/routes');`<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`app.use('/prettypay', prettypayRouter);`
+In index.js (or whatever you have named the server), you must include the lines:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`const prettypayRouter = require('./prettypay/routes/routes')`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`app.use('/prettypay', prettypayRouter)`
 
-On the appropriate EJS page, you must include:<br />
+On the appropriate EJS page, on which you wish to be able to fire the payment processor, you must include:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`<%- include('../prettypay/views/view.ejs')%>`<br />
 
 You may then use all the Prettypay functions on any javascript page linked to the EJS page.
@@ -18,16 +18,27 @@ You may then use all the Prettypay functions on any javascript page linked to th
 
 ## Functions
 Prettypay functions are used in javascript for the EJS page:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(` number `);` ...the number being the amount to charge.<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.abort(` 'Optional string explaining why the transaction has been aborted.' `)`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*` )` ...the number being the amount to charge.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.abort( `*'Optional string explaining why the transaction has been aborted.'*` )`<br />
 <br>
 
 ## Function options
 To make the payment form prefill itself for speed of use:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(` number `, { prefill: true });`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { prefill: true })`<br />
+<br>
+By default, the payment form requests the customer's postal address and email. If you do not wish to request this information, you can use:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { askAddress: false })`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { askEmail: false })`<br />
 <br>
 Prettypay uses £ by default, but accepts all currencies except €. To use a different currency instead of £ (in this example, using Japanese ¥):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(` number `, { currency: '`¥`' });`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { currency:  `'¥'` })`<br />
+<br>
+If you wish to do so, you can, of course, use more than one option, for example:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, {`<br />
+&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`currency:  `'¥'`,`<br />
+&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`prefill: true,`<br />
+&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`askAddress: false,`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`})`<br />
 <br>
 
 ## Data report
@@ -40,6 +51,8 @@ Prettypay applies checks to the fictional transaction. For example:
 - Prettypay checks that the transaction amount is greater than zero.
 - Prettypay checks that the card expiry date is appropriate.
 - Prettypay checks for anomalies indicating that the transaction data has been tampered with on the payment form.
+
+Where a check is failed, Prettypay will automatically abort the transaction. The developer may, however, add their own criteria and invoke `Prettypay.abort()` where they wish.
 <br><br>
 
 ## Trademark

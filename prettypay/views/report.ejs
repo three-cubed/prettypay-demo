@@ -63,9 +63,9 @@
         const nontransReportPP = document.getElementById('nontransReportPP');
 
         function toggleReportVisibility(report, btnId) {
-            report.classList.toggle('reportHiddenPP');
+            report.classList.toggle('invisiblePP');
             const btn = document.getElementById(btnId);
-            if (report.classList.contains('reportHiddenPP')) {
+            if (report.classList.contains('invisiblePP')) {
                 btn.firstChild.innerText = 'Display';
             } else {
                 btn.firstChild.innerText = 'Hide';

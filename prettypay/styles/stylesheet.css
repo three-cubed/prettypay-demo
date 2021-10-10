@@ -25,6 +25,11 @@ form input {
     font-size: var(--mainFontSize);
     color: rgb(60, 60, 60);
 }
+
+.invisiblePP {
+    transform: scale(0);
+    height: 0px;
+}
   
 .modal {
     position: fixed;
@@ -136,11 +141,6 @@ form input {
     min-height: 40px;
     min-width: calc(90px + 18vw);
     font-size: 16px;
-}
-
-.reportHiddenPP {
-    transform: scale(0);
-    height: 0px;
 }
 
 .reportObjectTransactionValue {

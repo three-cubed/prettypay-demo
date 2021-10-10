@@ -40,9 +40,10 @@ function startPay() {
         // This feature is in fact superfluous, or at least a double-check, if transactionInitialisationStatus is
         // being used to trigger, or not, the abortTransactionModal.
     }).then(function() {if (transactionInitialisationStatus == 'good') {
-            Prettypay.open(totalToCharge, { prefill: true });
+            // Prettypay.open(totalToCharge, { prefill: true });
             // Prettypay.open(totalToCharge, { currency: '¥' });
             // Prettypay.open(totalToCharge, { prefill: true, currency: '¥' });
+            Prettypay.open(totalToCharge, { prefill: true, askAddress: false });
         } else {
             Prettypay.abort('Aborted by parent directory (not prettypay directory).<br><br>Example rejection criterion of the parent directory\'s routes.js (even number) fulfilled.<br><br>This example optional message passed to Prettypay.abort() by parent directory\'s scripts.js.');
         }

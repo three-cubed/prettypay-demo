@@ -7,6 +7,7 @@ const {
     checkCardExpiry, 
     generateUUID, 
     formatNumberToString,
+    preprocessData,
     prepareData,
 } = require('../javascripts/utils.js');
 
@@ -18,15 +19,26 @@ router.post('/preprocess', function(req, res) {
         if (error) {
             console.log(error);
         } else {
-            let dataArray = JSON.parse(dataInFile);
-            dataArray.unshift(currentTransaction);
-            while (dataArray.length > 200) dataArray.pop(); // To prevent file getting too long, 200 in-progress transactions!
-            const dataStringForSending = JSON.stringify(dataArray);
-            fs.writeFile('./prettypay/records/inProgress.json', dataStringForSending, (err) => {
-                if (err) throw err;
-            });
+            try {
+                preprocessData(currentTransaction, dataInFile);
+            } catch (error) {
+                fs.writeFile('./prettypay/records/inProgress.json', '[]', (err) => {
+                    if (err) throw err;
+                })
+                try {
+                    fs.readFile('./prettypay/records/inProgress.json', function(error, dataInFile) {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            preprocessData(currentTransaction, dataInFile);
+                        }
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         }
-    })
+    });
     res.status(200).json({ uniqueTransactionToken: uniqueTransactionToken });
 })
 
@@ -34,7 +46,7 @@ router.post('/process', function(req, res) {
     const abortMessage = 'Fictional purchase aborted by Prettypay backend with status 403 (forbidden)';
     const currency = req.body.currency;
     const amountToProcess = parseFloat(req.body.amountToProcess);
-    const uniqueTransactionToken = req.body.uniqueTransactionToken
+    const uniqueTransactionToken = req.body.uniqueTransactionToken;
     const responseObject = {
         time: new Date(),
         successful: false,

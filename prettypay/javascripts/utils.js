@@ -62,6 +62,16 @@ function recordTransaction(responseObject) {
     })
 }
 
+function preprocessData(currentTransaction, dataInFile) {
+    let dataArray = JSON.parse(dataInFile);
+    dataArray.unshift(currentTransaction);
+    while (dataArray.length > 200) dataArray.pop(); // To prevent file getting too long, 200 in-progress transactions!
+    const dataStringForSending = JSON.stringify(dataArray);
+    fs.writeFile('./prettypay/records/inProgress.json', dataStringForSending, (err) => {
+        if (err) throw err;
+    });
+}
+
 function checkCardExpiry(input) {
     if (input === '' || input === null) return 'Prettypay failed to receive processable information for card expiry date.'
 
@@ -134,4 +144,4 @@ function prepareData(filename) {
     return data
 }
 
-module.exports = { matchPreprocessingData, recordTransaction, checkCardExpiry, generateUUID, formatNumberToString, prepareData };
+module.exports = { matchPreprocessingData, recordTransaction, checkCardExpiry, generateUUID, formatNumberToString, preprocessData, prepareData };

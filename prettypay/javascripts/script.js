@@ -28,7 +28,6 @@ const Prettypay = {
         if (amount <= 0) {
             Prettypay.abort('Error: The total charged is zero or less.');
         } else {
-            console.log(askAddress, askEmail)
             if (askAddress === false) {
                 contactPostalAddress.classList.add('invisiblePP');
                 contactPostalAddress.setAttribute("required", "");

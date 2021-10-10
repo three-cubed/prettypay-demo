@@ -6,6 +6,8 @@ Prettypay is a web development tool. It is a simple simulated payment processing
 ## To use
 First, the Prettypay directory must be cloned and placed in the parent file that you wish to use it in.<br>
 
+You will presumably not wish to retain the reocrds of the directory which you cloned, so you can delete all information **within*** each file in prettypay/records (**do not** delete the files themselves!).<br>
+
 In index.js (or whatever you have named the server), you must include the lines:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`const prettypayRouter = require('./prettypay/routes/routes')`<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`app.use('/prettypay', prettypayRouter)`
@@ -18,24 +20,24 @@ You may then use all the Prettypay functions on any javascript page linked to th
 
 ## Functions
 Prettypay functions are used in javascript for the EJS page:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*` )` ...the number being the amount to charge.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `amount` )` ...the amount being an amount passed to Prettypay to charge.<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.abort( `*'Optional string explaining why the transaction has been aborted.'*` )`<br />
 <br>
 
 ## Function options
 To make the payment form prefill itself for speed of use:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { prefill: true })`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { prefill: true })`<br />
 <br>
 By default, the payment form requests the customer's postal address and email. If you do not wish to request this information, you can use:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { askAddress: false })`<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { askEmail: false })`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { askAddress: false })`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { askEmail: false })`<br />
 <br>
-Prettypay uses £ by default, but accepts all currencies except €. To use a different currency instead of £ (in this example, using Japanese ¥):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, { currency:  `'¥'` })`<br />
+Prettypay uses £ by default, but accepts all currencies except €. To use a different currency instead of £ (in this example, Japanese ¥):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { currency:  `'¥'` })`<br />
 <br>
 If you wish to do so, you can, of course, use more than one option, for example:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*number*`, {`<br />
-&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`currency:  `'¥'`,`<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, {`<br />
+&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`currency:  '¥',`<br />
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`prefill: true,`<br />
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`askAddress: false,`<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`})`<br />

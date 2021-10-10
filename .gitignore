@@ -1,0 +1,8 @@
+# Remember to include parent directory's /routes when tidied/linted!
+/routes
+
+node_modules
+/NOTES_TO_SELF.txt
+prettypay/NOTES_TO_SELF.txt
+experiments.js
+buyables.json

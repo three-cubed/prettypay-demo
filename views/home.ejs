@@ -1,0 +1,33 @@
+<!-- For deployment, change regex pattern on form where indicated! -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/stylesheet.css">
+    <script defer src="javascripts/script.js"></script>
+    <title>Home page</title>
+</head>
+<body>
+    
+    <%- include('../prettypay/views/view.ejs')%>
+
+    <h2>Home page</h2>
+    <input type="button" value="Click me to log in the console!" onclick="console.log('Clicked!')"><br>
+    <h3>Welcome to This page!</h3>
+    <p>
+        quodsi ita est uti dissimiles regiones ab inclinationibus caeli variis generibus sint comparatae, ut etiam naturae gentium disparibus animis et corporum figuris qualitatibusque nascerentur, non dubitemus aedificiorum quoque rationes ad nationum gentium qui proprietates apte distribuere, cum habeamus ab ipsa rerum natura sollertem et expeditam monstrationem. Quoad potui summa ratione proprietates locorum ab natura rerum dispositas animadvertere exposui et quemadmodum ad solis cursum et inclinationes caeli oporteat ad gentium figuras constituere aedificiorum qualitates dixi. itaque nunc singulorum generum in aedificiis commensus symmetriarum et universos et separatos breviter explicabo.
+    </p>
+    <div class="item-quantity basket-column">
+        <input id="item-quantity-input" type="number" value="1">
+    </div>
+    <br>
+    <div>
+        £ <span id='price-to-pay'>1</span>
+    </div>
+    <br>
+
+    <button id='buyBtn'>Buy</button>
+
+</body>
+</html>

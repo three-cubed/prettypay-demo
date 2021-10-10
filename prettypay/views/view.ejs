@@ -1,0 +1,84 @@
+<style type="text/css">
+    @import url("prettypay/styles/stylesheet.css");
+</style>
+<script defer src="prettypay/javascripts/script.js">
+</script>
+
+<div class="modal" id="payment-modal">
+    <%- include ('./modal-top.ejs') %>
+    <div class="modal-body">
+        <br>
+        <span class="text-in-modal">This is fake. Please do not enter real card data.</span>
+        <br>
+        <form id='payment-form' onsubmit='event.preventDefault(); processPayment();'>
+        <!-- Do not forget event.preventDefault() or the page will reload! -->
+            <div class='input-label-with-field'>
+                <label for="payment-contact-name">Contact name:</label>
+                <input type="text" id="payment-contact-name" name="paymentContactName" placeholder='Mr A Smith'
+                required pattern="^[A-Za-z].+">
+            </div>
+            <div class='input-label-with-field'>
+                <label for="payment-contact-email">Email:</label>
+                <input type="text" id="payment-contact-email" name="paymentContactEmail" placeholder='asmi@email.com'
+                type="email">
+            </div>
+            <br>
+            <div class='input-label-with-field'>
+                <label for="payment-card-name">Name on card:</label>
+                <input type="text" id="payment-card-name" name="paymentCardName" placeholder='MR A SMITH'
+                required pattern="[A-Za-z]+.+[A-Za-z]+.+[A-Za-z]+[\w ]+">
+            </div>
+            <div class='input-label-with-field'>
+                <label for="payment-card-number">Card number:</label>
+                <input type="text" id="payment-card-number" name="PaymentCardNumber" placeholder='xxxx xxxx xxxx xxxx'
+                    required pattern="\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}"><br> 
+            </div>
+            <div class='input-label-with-field'>
+                <label for="payment-card-expiry">Card expiry date:</label>
+                <input type="text" id="payment-card-expiry" name="paymentCardExpiry" placeholder='mm/yy'
+                    required pattern="\d{2}/\d{2}">
+            </div>
+            <div class='input-label-with-field'>
+                <label for="payment-card-sec-code">Card security code:</label>
+                <input type="text" id="payment-card-sec-code" name="paymentCardSecCode" placeholder='xxx'
+                    required pattern="\d{3}"
+                >
+            </div>
+            <br>
+            <div class="text-in-modal">
+                <strong>
+                    Total payment amount: <span id='currencyOnModal'></span>&nbsp;<span id='totalOnModal'></span>
+                </strong>
+            </div>
+            <br>
+            <input type='submit' id='process-transaction-prettypay-btn' value='Confirm & Pay Now!'><br>
+            <!-- Amazon uses Buy Now, ebay uses Confirm and Pay -->
+            <br>
+            </form>
+            <%- include ('./copyright-fragment.ejs') %> 
+    </div>
+</div>
+
+<div class="modal" id="transaction-aborted-modal">
+    <%- include ('./modal-top.ejs') %>
+    <div class="modal-body">
+        <br>
+        <strong class='warning'>⚠️&emsp;The transaction has been aborted.</strong>
+        <span id='transaction-aborted-optional-message-span'></span>
+        <br>
+        <%- include ('./copyright-fragment.ejs') %>
+    </div>
+</div>
+
+<div class="modal" id="transaction-successful-modal">
+    <%- include ('./modal-top.ejs') %>
+    <div class="modal-body">
+        <br>
+        <strong>The transaction was sucessful.</strong>
+        <span id='transaction-successful-optional-message-span'></span>
+        <br>
+        <%- include ('./copyright-fragment.ejs') %>
+    </div>
+</div>
+
+<div id="overlay"></div>

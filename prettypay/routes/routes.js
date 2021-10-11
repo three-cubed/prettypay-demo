@@ -13,8 +13,8 @@ const {
 
 router.post('/preprocess', function(req, res) {
     const currentTransaction = req.body;
-    const uniqueTransactionToken = generateUUID();
-    currentTransaction.uniqueTransactionToken = uniqueTransactionToken;
+    const uniqueTransactionReference = generateUUID();
+    currentTransaction.uniqueTransactionReference = uniqueTransactionReference;
     fs.readFile('./prettypay/records/inProgress.json', function(error, dataInFile) {
         if (error) {
             console.log(error);
@@ -39,20 +39,20 @@ router.post('/preprocess', function(req, res) {
             }
         }
     });
-    res.status(200).json({ uniqueTransactionToken: uniqueTransactionToken });
+    res.status(200).json({ uniqueTransactionReference: uniqueTransactionReference });
 })
 
 router.post('/process', function(req, res) {
     const abortMessage = 'Fictional purchase aborted by Prettypay backend with status 403 (forbidden)';
     const currency = req.body.currency;
     const amountToProcess = parseFloat(req.body.amountToProcess);
-    const uniqueTransactionToken = req.body.uniqueTransactionToken;
+    const uniqueTransactionReference = req.body.uniqueTransactionReference;
     const responseObject = {
         time: new Date(),
         successful: false,
         currency: currency,
         amountToProcess: amountToProcess,
-        uniqueTransactionToken: uniqueTransactionToken,
+        uniqueTransactionReference: uniqueTransactionReference,
         contactName: req.body.contactName,
         contactEmail: req.body.contactEmail,
         customerMessage: ''
@@ -78,13 +78,13 @@ router.post('/process', function(req, res) {
         responseObject.customerMessage = '<p style="text-align: center">Prettypay does not accept euros.<br>🇬🇧&nbsp;God Save the Queen!&nbsp;🇬🇧</p>';
         recordTransaction(responseObject);
         res.status(401).json(responseObject);
-    } else if (matchPreprocessingData(uniqueTransactionToken, currency, amountToProcess) === 'discrepancy') {
+    } else if (matchPreprocessingData(uniqueTransactionReference, currency, amountToProcess) === 'discrepancy') {
         const discrepancyMessage = 'There appears to be a discrepancy between amount & currency data received at preprocessing and corresponding data received at processing. You may wish to try again.'
         responseObject.devMessage = `${abortMessage}: ${discrepancyMessage}`;
         responseObject.customerMessage = `${discrepancyMessage}`;
         recordTransaction(responseObject);
         res.status(401).json(responseObject);
-    } else if (matchPreprocessingData(uniqueTransactionToken, currency, amountToProcess) === 'idError') {
+    } else if (matchPreprocessingData(uniqueTransactionReference, currency, amountToProcess) === 'idError') {
         responseObject.devMessage = `${abortMessage}: There does not seem to be a transaction with this unique identity recorded at the backend as having been initiated.`;
         responseObject.customerMessage = `There appears to be a problem with the transaction. You may wish to try again.`;
         recordTransaction(responseObject);
@@ -92,7 +92,7 @@ router.post('/process', function(req, res) {
     } else {
         responseObject.successful = true; // Very important line!
         responseObject.devMessage = `Successful fictional purchase processed by Prettypay backend; total charge of ${amountToProcess}.`;
-        responseObject.customerMessage = `Amount debited: ${req.body.currency} ${formatNumberToString(req.body.amountToProcess)}<br><br><small>Transaction reference:<br>${uniqueTransactionToken}<small>`;
+        responseObject.customerMessage = `Amount debited: ${req.body.currency} ${formatNumberToString(req.body.amountToProcess)}<br><br><small>Transaction reference:<br>${uniqueTransactionReference}<small>`;
         responseObject.amountDebited = [amountToProcess, req.body.currency];
         recordTransaction(responseObject);
         res.status(200).json(responseObject);

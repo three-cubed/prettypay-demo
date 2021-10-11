@@ -13,7 +13,7 @@ const successfulTransactionOptionalMessageSpan = document.getElementById('transa
 const contactPostalAddress = document.getElementById('payment-contact-postal-address').parentElement;
 const contactEmail = document.getElementById('payment-contact-email').parentElement;
 
-let uniqueTransactionToken;
+let uniqueTransactionReference;
 
 if (document.readyState == 'loading') {
 	document.addEventListener('DOMContentLoaded', addEventListenersAndResetForm)
@@ -97,7 +97,7 @@ function preprocessPayment(amount, currency) {
     }).then(function(res) {
         return res.json();
     }).then(function(resJSON) {
-        uniqueTransactionToken = resJSON.uniqueTransactionToken;
+        uniqueTransactionReference = resJSON.uniqueTransactionReference;
     }).catch(function(error) {
         console.error(error);
     })
@@ -152,7 +152,7 @@ function processPayment() {
             expiryString: expiryString,
             amountToProcess: amountToProcess,
             currency: currency,
-            uniqueTransactionToken: uniqueTransactionToken,
+            uniqueTransactionReference: uniqueTransactionReference,
             contactName: contactName,
             contactEmail: contactEmail,
             cardName: cardName,

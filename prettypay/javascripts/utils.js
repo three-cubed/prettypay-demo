@@ -5,8 +5,8 @@ function matchPreprocessingData(id, currency, amountToProcess) {
     // MUST be sync or the function goes ahead and returns undefined which messes things up.
     dataArray = JSON.parse(dataInFile);
     for (let i = 0; i < dataArray.length; i++) {
-        if (dataArray[i].uniqueTransactionToken === id) {
-            if (dataArray[i].currency === currency && parseFloat(dataArray[i].amount) === amountToProcess) {
+        if (dataArray[i].uniqueTransactionReference === id) {
+            if (dataArray[i].currency === currency && parseFloat(dataArray[i].amount) === parseFloat(amountToProcess)) {
                 rewriteFileWithoutItem(dataArray, i);
                 return;
             } else {

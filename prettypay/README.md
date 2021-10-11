@@ -29,9 +29,9 @@ However, when you include `<%- include('../prettypay/views/view.ejs')%>` in a pa
 Therefore, the javascript `script src` tag and CSS import at the top of `/prettypay/views/view.ejs` have paths which may need amending to fit your file structure.
 
 ### Potential loading order problems
-As is often the case with javascript functions for frontend pages, you will need to take care to not invoke Prettypay functions prior to the loading of the page, or you will get an error such as `Uncaught ReferenceError: Prettypay is not defined`. 
+As is often the case with javascript functions for frontend pages, you will need to avoid invoking Prettypay functions prior to the loading of the page, or you will get an error such as `Uncaught ReferenceError: Prettypay is not defined`. 
 
-Such errors are unlikely in practical usage, as Prettypay will be linked to some purchase button that will not exist prior to page loading. If, however, you are initially playing with Prettypay by placing a Prettypay function straight into your javascript page, this error may occur.
+Such errors are unlikely in practical usage, as Prettypay would be linked to some purchase button that will not exist prior to page loading. If, however, you were initially playing with Prettypay by placing a Prettypay function straight into your javascript page, this error might occur.
 
 ## Functions
 Prettypay functions are used in javascript for the EJS page:<br />

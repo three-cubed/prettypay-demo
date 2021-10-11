@@ -6,17 +6,32 @@ Prettypay is a web development tool. It is a simple simulated payment processing
 ## To use
 First, the Prettypay directory must be cloned and placed in the parent file that you wish to use it in.<br>
 
-You will presumably not wish to retain the reocrds of the directory which you cloned, so you can delete all information **within*** each file in prettypay/records (**do not** delete the files themselves!).<br>
+You will presumably not wish to retain the transaction records of the directory which you cloned, so you can delete all information **within** each file in prettypay/records (do not delete the files themselves!).<br>
 
 In index.js (or whatever you have named the server), you must include the lines:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`const prettypayRouter = require('./prettypay/routes/routes')`<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`app.use('/prettypay', prettypayRouter)`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`app.use('/prettypay', prettypayRouter)`<br>
+This assumes you have called your instance of express.js "app". If not, amend accordingly!
 
 On the appropriate EJS page, on which you wish to be able to fire the payment processor, you must include:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`<%- include('../prettypay/views/view.ejs')%>`<br />
 
 You may then use all the Prettypay functions on any javascript page linked to the EJS page.
 <br><br>
+
+## Potential problems
+
+### Potential path problems
+The file `/prettypay/views/view.ejs` begins with a javascript `script src` tag and a CSS import. These should link to the appropriate javascript and CSS pages in the `/prettypay` directory. 
+
+However, when you include `<%- include('../prettypay/views/view.ejs')%>` in a page, the location of the page in the parent directory and the manner in which it is routed may change the paths that must be followed in order to access Prettypay's javascript and CSS.
+
+Therefore, the javascript `script src` tag and CSS import at the top of `/prettypay/views/view.ejs` have paths which may need amending to fit your file structure.
+
+### Potential loading order problems
+As is often the case with javascript functions for frontend pages, you will need to take care to not invoke Prettypay functions prior to the loading of the page, or you will get an error such as `Uncaught ReferenceError: Prettypay is not defined`. 
+
+Such errors are unlikely in practical usage, as Prettypay will be linked to some purchase button that will not exist prior to page loading. If, however, you are initially playing with Prettypay by placing a Prettypay function straight into your javascript page, this error may occur.
 
 ## Functions
 Prettypay functions are used in javascript for the EJS page:<br />
@@ -28,14 +43,14 @@ Prettypay functions are used in javascript for the EJS page:<br />
 To make the payment form prefill itself for speed of use:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { prefill: true })`<br />
 <br>
-By default, the payment form requests the customer's postal address and email. If you do not wish to request this information, you can use:<br>
+By default, the payment form requests the customer's postal address and email. If you do not wish to request this information, you can use options:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { askAddress: false })`<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { askEmail: false })`<br />
 <br>
 Prettypay uses £ by default, but accepts all currencies except €. To use a different currency instead of £ (in this example, Japanese ¥):<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { currency:  `'¥'` })`<br />
 <br>
-If you wish to do so, you can, of course, use more than one option, for example:<br>
+If you wish to do so, you can, of course, use more than one option at once, for example:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, {`<br />
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`currency:  '¥',`<br />
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`prefill: true,`<br />
@@ -54,7 +69,7 @@ Prettypay applies checks to the fictional transaction. For example:
 - Prettypay checks that the card expiry date is appropriate.
 - Prettypay checks for anomalies indicating that the transaction data has been tampered with on the payment form.
 
-Where a check is failed, Prettypay will automatically abort the transaction. The developer may, however, add their own criteria and invoke `Prettypay.abort()` where they wish.
+Where a check is failed, Prettypay will automatically abort the transaction. The developer may, however, add their own criteria and invoke `Prettypay.abort()` in their javascript functions as they wish.
 <br><br>
 
 ## Trademark

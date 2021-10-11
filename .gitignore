@@ -1,4 +1,4 @@
-# Remember to include parent directory's /routes when tidied/linted!
+# Remember to include parent directory's /routes.js when tidied/linted!
 /routes
 
 node_modules

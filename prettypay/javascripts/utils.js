@@ -46,13 +46,14 @@ function recordTransaction(responseObject) {
             console.log(error);
         } else {
             try {
-                const dataArray = JSON.parse(dataInFile);
-                dataArray.unshift(responseObject);
-                while (dataArray.length > 100) dataArray.pop(); // To prevent either file getting too long, 100 records each!
-                const dataStringForSending = JSON.stringify(dataArray);
-                fs.writeFile(fileToRecordIn, dataStringForSending, (err) => {
-                    if (err) throw err;
-                });
+                recordTransactionInnerLoop(responseObject, fileToRecordIn, dataInFile);
+                // const dataArray = JSON.parse(dataInFile);
+                // dataArray.unshift(responseObject);
+                // while (dataArray.length > 100) dataArray.pop(); // To prevent either file getting too long, 100 records each!
+                // const dataStringForSending = JSON.stringify(dataArray);
+                // fs.writeFile(fileToRecordIn, dataStringForSending, (err) => {
+                //     if (err) throw err;
+                // });
             } catch (error) {
                 fs.writeFile(fileToRecordIn, '[]', (err) => {
                     if (err) throw err;
@@ -60,6 +61,16 @@ function recordTransaction(responseObject) {
             }
         }
     })
+}
+
+function recordTransactionInnerLoop(responseObject, fileToRecordIn, dataInFile) {
+    const dataArray = JSON.parse(dataInFile);
+    dataArray.unshift(responseObject);
+    while (dataArray.length > 100) dataArray.pop(); // To prevent either file getting too long, 100 records each!
+    const dataStringForSending = JSON.stringify(dataArray);
+    fs.writeFile(fileToRecordIn, dataStringForSending, (err) => {
+        if (err) throw err;
+    });
 }
 
 function preprocessData(currentTransaction, dataInFile) {
@@ -129,7 +140,7 @@ function formatNumberToString(number) {
      return numberString;
 }
 
-function prepareData(filename) {
+function prepareDataToReport(filename) {
     let data;
     try {
         data = fs.readFileSync(`./prettypay/records/${filename}`);
@@ -144,4 +155,4 @@ function prepareData(filename) {
     return data
 }
 
-module.exports = { matchPreprocessingData, recordTransaction, checkCardExpiry, generateUUID, formatNumberToString, preprocessData, prepareData };
+module.exports = { matchPreprocessingData, recordTransaction, checkCardExpiry, generateUUID, formatNumberToString, preprocessData, prepareDataToReport };

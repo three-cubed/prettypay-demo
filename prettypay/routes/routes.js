@@ -8,7 +8,7 @@ const {
     generateUUID, 
     formatNumberToString,
     preprocessData,
-    prepareData,
+    prepareDataToReport,
 } = require('../javascripts/utils.js');
 
 router.post('/preprocess', function(req, res) {
@@ -99,9 +99,26 @@ router.post('/process', function(req, res) {
     }
 })
 
+function postToParent(responseObject) {
+    fetch('/prettypay/preprocess', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            responseObject: responseObject
+        })
+    }).then(function(res) {
+        return res.json();
+    }).catch(function(error) {
+        console.error(error);
+    })
+}
+
 router.get('/report', function(req, res) {
-    let dataToReport = prepareData('transactions.json');
-    let nontransDataToReport = prepareData('nontransactions.json');
+    let dataToReport = prepareDataToReport('transactions.json');
+    let nontransDataToReport = prepareDataToReport('nontransactions.json');
 
     res.render(require('path').resolve(__dirname, '..') + '/views/report.ejs', { 
         dataToReport: dataToReport,

@@ -69,7 +69,13 @@ Prettypay applies checks to the fictional transaction. For example:
 - Prettypay checks that the card expiry date is appropriate.
 - Prettypay checks for anomalies indicating that the transaction data has been tampered with on the payment form.
 
-Where a check is failed, Prettypay will automatically abort the transaction. The developer may, however, add their own criteria and invoke `Prettypay.abort()` in their javascript functions as they wish.
+Where a check is failed, Prettypay will automatically abort the transaction. The developer may, however, add their own criteria and invoke `Prettypay.abort()` where they wish.
+
+After processing, Prettypay will send a response object, which you can use to affect the next step in your programme. The obvious thing to react to is the success, or not, of the transaction, which can be accessed in two ways:
+- The response status code will be 2** for a success (probably 200), and something else (probably 401) for a failure. The developer can therefore react, for example, to whether `resStatus.toString()[0] === '2'`.<br>
+- For a successful transaction, `response.body.sucessful === true`, but otherwise, `response.body.sucessful === false`.<br>
+
+Alternatively, however, the developer may wish to react to some other aspect of the processing response object, such as the amount or contact details.
 <br><br>
 
 ## Trademark

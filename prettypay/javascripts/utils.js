@@ -41,35 +41,40 @@ function recordTransaction(responseObject) {
     } else {
         fileToRecordIn = './prettypay/records/nontransactions.json';
     }
+    try {
+        readAndWriteRecordFile (responseObject, fileToRecordIn);
+    } catch (error) {
+        reinitialiseFile(fileToRecordIn);
+        readAndWriteRecordFile (responseObject, fileToRecordIn);
+    }
+}
+
+function readAndWriteRecordFile (responseObject, fileToRecordIn) {
     fs.readFile(fileToRecordIn, function(error, dataInFile) {
         if (error) {
             console.log(error);
         } else {
             try {
-                recordTransactionInnerLoop(responseObject, fileToRecordIn, dataInFile);
-                // const dataArray = JSON.parse(dataInFile);
-                // dataArray.unshift(responseObject);
-                // while (dataArray.length > 100) dataArray.pop(); // To prevent either file getting too long, 100 records each!
-                // const dataStringForSending = JSON.stringify(dataArray);
-                // fs.writeFile(fileToRecordIn, dataStringForSending, (err) => {
-                //     if (err) throw err;
-                // });
-            } catch (error) {
-                fs.writeFile(fileToRecordIn, '[]', (err) => {
+                console.log('Attempting to write file...');
+                const dataArray = JSON.parse(dataInFile);
+                dataArray.unshift(responseObject);
+                while (dataArray.length > 100) dataArray.pop(); // To prevent either file getting too long, 100 records each!
+                const dataStringForSending = JSON.stringify(dataArray);
+                fs.writeFile(fileToRecordIn, dataStringForSending, (err) => {
                     if (err) throw err;
                 });
+            } catch (error) {
+                console.log(error);
             }
         }
     })
 }
 
-function recordTransactionInnerLoop(responseObject, fileToRecordIn, dataInFile) {
-    const dataArray = JSON.parse(dataInFile);
-    dataArray.unshift(responseObject);
-    while (dataArray.length > 100) dataArray.pop(); // To prevent either file getting too long, 100 records each!
-    const dataStringForSending = JSON.stringify(dataArray);
-    fs.writeFile(fileToRecordIn, dataStringForSending, (err) => {
-        if (err) throw err;
+function reinitialiseFile(fileToRecordIn) {
+    fs.writeFile(fileToRecordIn, '[]', (err) => {
+        if (err) {
+            throw err;
+        }
     });
 }
 

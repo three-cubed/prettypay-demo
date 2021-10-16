@@ -25,6 +25,7 @@
             <p class='reportItem'>
                 <% const keys = Object.keys(reportObject); %>
                 <% keys.forEach(key => { %>
+                    <% if (key === 'prettypayPostPath') retun; %>
                     <%= key %>
                     :&ensp;
                     <span class='reportObjectTransactionValue'>
@@ -43,6 +44,7 @@
             <p class='reportItem'>
                 <% const keys = Object.keys(reportObject); %>
                 <% keys.forEach(key => { %>
+                    <% if (key === 'prettypayPostPath') retun; %>
                     <%= key %>
                     :&ensp;
                     <span class='reportObjectNontransValue'>

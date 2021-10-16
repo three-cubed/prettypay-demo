@@ -95,7 +95,7 @@ form input {
     font-weight: bold;
 }
 
-#overlay {
+#overlay-pp {
     position: fixed;
     opacity: 0;
     transition: 200ms ease-in-out;
@@ -107,7 +107,7 @@ form input {
     pointer-events: none;
 }
   
-#overlay.active {
+#overlay-pp.active {
     opacity: 0.35;
     pointer-events: all;
 }

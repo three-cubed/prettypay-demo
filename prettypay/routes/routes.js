@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const fetch = require('node-fetch');
+
 const { 
     matchPreprocessingData, 
     recordTransaction, 
@@ -10,6 +12,8 @@ const {
     preprocessData,
     prepareDataToReport,
 } = require('../javascripts/utils.js');
+
+// let latestResponse = null;
 
 router.post('/preprocess', function(req, res) {
     const currentTransaction = req.body;
@@ -73,11 +77,6 @@ router.post('/process', function(req, res) {
         responseObject.customerMessage = `${checkCardExpiry(req.body.expiryString)}`;
         recordTransaction(responseObject);
         res.status(401).json(responseObject);
-    } else if (req.body.currency === '€') {
-        responseObject.devMessage = `${abortMessage}: Euro transactions forbidden.`;
-        responseObject.customerMessage = '<p style="text-align: center">Prettypay does not accept euros.<br>🇬🇧&nbsp;God Save the Queen!&nbsp;🇬🇧</p>';
-        recordTransaction(responseObject);
-        res.status(401).json(responseObject);
     } else if (matchPreprocessingData(uniqueTransactionReference, currency, amountToProcess) === 'discrepancy') {
         const discrepancyMessage = 'There appears to be a discrepancy between amount & currency data received at preprocessing and corresponding data received at processing. You may wish to try again.'
         responseObject.devMessage = `${abortMessage}: ${discrepancyMessage}`;
@@ -89,28 +88,33 @@ router.post('/process', function(req, res) {
         responseObject.customerMessage = `There appears to be a problem with the transaction. You may wish to try again.`;
         recordTransaction(responseObject);
         res.status(401).json(responseObject);
+    } else if (req.body.currency === '€') {
+        responseObject.devMessage = `${abortMessage}: Euro transactions forbidden.`;
+        responseObject.customerMessage = '<p style="text-align: center">Prettypay does not accept euros.<br>🇬🇧&nbsp;God Save the Queen!&nbsp;🇬🇧</p>';
+        recordTransaction(responseObject);
+        res.status(401).json(responseObject);
     } else {
         responseObject.successful = true; // Very important line!
         responseObject.devMessage = `Successful fictional purchase processed by Prettypay backend; total charge of ${amountToProcess}.`;
         responseObject.customerMessage = `Amount debited: ${req.body.currency} ${formatNumberToString(req.body.amountToProcess)}<br><br><small>Transaction reference:<br>${uniqueTransactionReference}<small>`;
         responseObject.amountDebited = [amountToProcess, req.body.currency];
         recordTransaction(responseObject);
+        postToParent(responseObject, req.body.prettypayPostPath);
         res.status(200).json(responseObject);
     }
 })
 
-function postToParent(responseObject) {
-    fetch('/prettypay/preprocess', {
+function postToParent(responseObject, pathToPostToParent) {
+    if (pathToPostToParent === null) return;
+    fetch(pathToPostToParent, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            responseObject: responseObject
+            transaction: responseObject
         })
-    }).then(function(res) {
-        return res.json();
     }).catch(function(error) {
         console.error(error);
     })
@@ -125,7 +129,15 @@ router.get('/report', function(req, res) {
         nontransDataToReport: nontransDataToReport
     });
     // __dirname would go from this routes directory, 
-    // while (require('path').resolve(__dirname, '..') gives me the directory above.
+    // while (require('path').resolve(__dirname, '..') gives me the directory above it.
 })
+
+// router.get('/responseData', async (req, res) => {
+//     dataReadyToSend =  JSON.stringify(latestResponse);
+//     console.log('router re Prettypay.postTransaction()');
+//     console.log(dataReadyToSend);
+//     latestResponse = null; // If wish to make callable once only...
+//     res.status(200).send(dataReadyToSend);
+// })
 
 module.exports = router;

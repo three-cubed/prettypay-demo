@@ -41,8 +41,14 @@ function startPay() {
         // being used to trigger, or not, the abortTransactionModal.
     }).then(function() {if (transactionInitialisationStatus == 'good') {
             Prettypay.open(totalToCharge, { prefill: true, askAddress: false });
+            // Prettypay.postTransaction('http://localhost:3030/prettypay_post');
+            Prettypay.setSuccessFunction((data) => {
+                console.log('success function arrow function fired');
+                // console.log(data);
+                // window.location.href = `/accepted/${data.uniqueTransactionReference}/${data.amountToProcess}/${data.currency}`
+            });
         } else {
-            Prettypay.abort('Aborted by parent directory (not prettypay directory).<br><br>Example rejection criterion of the parent directory\'s routes.js (even number) fulfilled.<br><br>This example optional message passed to Prettypay.abort() by parent directory\'s scripts.js.');
+            Prettypay.abort('Aborted by parent directory as demo (not prettypay directory).<br><br>Example acceptance criterion of the parent directory\'s routes.js (odd number) not met.<br><br>This example optional message passed to Prettypay.abort() by parent directory\'s scripts.js.');
         }
     }).catch(function(error) {
         console.error(error);

@@ -1,0 +1,30 @@
+{
+    "Item type 1": [
+        {
+            "id": 101,
+            "name": "Pencils",
+            "price": 1,
+            "imgName": "genericImage.png"
+        },
+        {
+            "id": 102,
+            "name": "Pens",
+            "price": 2,
+            "imgName": "genericImage.png"
+        }
+    ],
+    "Item type 2": [
+        {
+            "id": 201,
+            "name": "Big book",
+            "price": 15,
+            "imgName": "genericImage.png"
+        },
+        {
+            "id": 202,
+            "name": "Small book",
+            "price": 10,
+            "imgName": "genericImage.png"
+        }
+    ]
+}

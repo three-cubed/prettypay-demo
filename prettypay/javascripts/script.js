@@ -50,7 +50,7 @@ const Prettypay = {
     },
     abort: function(message = '') {
         closeAnyModals();
-        console.log(`abort: message: ${message}`)
+        // console.log(`abort: message: ${message}`);
         if (message !== '') {
             abortTransactionOptionalMessageSpanPP.innerHTML = `<span id='transaction-aborted-optional-message-span'><br>${message}<br></span>`
         } else {
@@ -174,7 +174,7 @@ function closeModal(modal) {
 }
 
 function processPayment() {
-    const amountToProcessPP = parseFloat(totalOnModalPP.innerText);
+    const amountToProcessPP = parseFloat(totalOnModal.innerText.replace(',', ''));
     const expiryStringPP = paymentCardExpiryPP.value;
     const currencyPP = currencyOnModalPP.innerText;
     const contactNamePP = document.getElementById('payment-contact-name').value;

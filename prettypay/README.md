@@ -26,7 +26,7 @@ Unless you are sure you will not use `Prettypay.postTransaction()`, you should a
 ### Potential path problems
 The file `/prettypay/views/view.ejs` begins with a javascript `script src` tag and a CSS import. These should link to the appropriate javascript and CSS pages in the `/prettypay` directory. 
 
-However, when you include `<%- include('../prettypay/views/view.ejs')%>` in a page, the location of the page in the parent directory and the manner in which it is routed may change the paths that must be followed in order to access Prettypay's javascript and CSS.
+However, when you include `<%- include('../prettypay/views/view.ejs')%>` in a file, the location of that file in the parent directory and the manner in which it is routed may change the paths that must be followed in order to access Prettypay's javascript and CSS. Note that the paths must be in relation to the location of the file in which the Prettypay view is placed, not the location of the Prettypay view file.
 
 Therefore, the javascript `script src` tag and CSS import at the top of `/prettypay/views/view.ejs` have paths which may need amending to fit your file structure.
 
@@ -39,16 +39,16 @@ Such errors are unlikely in practical usage, as Prettypay would be linked to som
 ## Functions
 Prettypay functions are used in javascript source for the EJS page:<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `amount` )` ...the amount being an amount passed to Prettypay to charge.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.abort( `*'Optional string explaining why the transaction has been aborted.'*` )`<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.setSuccessFunction( `*'Function to perform on successful completion of transaction.'*` )`<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.setNotSuccessFunction( `*'Function to perform on abortion of transaction.'*` )` ...for unsuccessful transactions that did reach the payment form stage.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( `*amount*` )` ...the amount being an amount passed to Prettypay to charge.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.abort( `'Optional string explaining why the transaction has been aborted'` )`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.setSuccessFunction( `*Function to perform on successful completion of transaction*` )`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.setNotSuccessFunction( `*Function to perform on abortion of transaction*` )` ...for unsuccessful transactions that did reach the payment form stage.<br>
 
 Note that both `Prettypay.setSuccessFunction()` and `Prettypay.setNotSuccessFunction()` provide data from the relevant (un)successful transaction as an argument (see function examples (1) below).<br>
 
 Neither `Prettypay.setSuccessFunction()` nor `Prettypay.setNotSuccessFunction()` need be set. If, at a certain stage in your code, you wish to nullify the functions set previously, use a `null` argument (see function examples (1)(b) below).<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.postTransaction( `*'**Absolute** URL'*` )` ...will post information on the outcome of a transaction that did reach the payment form stage.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.postTransaction( `*Absolute URL*` )` ...will post information on the outcome of a transaction that did reach the payment form stage.<br>
 
 You may wish to pay attention to timing this to get the information you want. `Prettypay.postTransaction()` might well follow a  `Prettypay.open()` function (see function examples (2) below). The user chooses how to handle this post on their routes page (see function examples (3) below).<br>
 <br>
@@ -75,20 +75,20 @@ You may wish to pay attention to timing this to get the information you want. `P
 
 ## Prettypay.open() options
 To make the payment form prefill itself for speed of use:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { prefill: true })`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, { prefill: true })`<br>
 <br>
 By default, the payment form requests the customer's postal address and email. If you do not wish to request this information, you can use options:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { askAddress: false })`<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { askEmail: false })`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, { askAddress: false })`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, { askEmail: false })`<br>
 <br>
 Prettypay uses £ by default, but accepts all currencies except €. To use a different currency instead of £ (in this example, Japanese ¥):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, { currency:  `'¥'` })`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, { currency:  '¥' })`<br>
 <br>
 If you wish to do so, you can, of course, use more than one option at once, for example:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open( amount, {`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, {`<br>
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`currency:  '¥',`<br>
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`prefill: true,`<br>
-&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`askAddress: false,`<br>
+&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`askAddress: false`<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`})`<br>
 <br>
 

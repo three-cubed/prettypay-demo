@@ -2,15 +2,18 @@ const fs = require('fs'); // Without this, "ReferenceError: fs is not defined"
 
 function matchPreprocessingData(id, currency, amountToProcess) {
     const dataInFile = fs.readFileSync('./prettypay/records/inProgress.json');
-    // MUST be sync or the function goes ahead and returns undefined which messes things up.
-    dataArray = parseOrCreateJSON(dataInFile);
+    // MUST be sync or dataInFile is undefined which messes things up.
+    dataArray = parseOrCreateJSON(dataInFile, './prettypay/records/inProgress.json');
+    // console.log('dataArray');
+    // console.log(dataArray);
     for (let i = 0; i < dataArray.length; i++) {
+        console.log(`dataArray[i].uniqueTransactionReference === id? ${dataArray[i].uniqueTransactionReference === id}`);
         if (dataArray[i].uniqueTransactionReference === id) {
             if (dataArray[i].currency === currency && parseFloat(dataArray[i].amount) === parseFloat(amountToProcess)) {
-                rewriteFileWithoutItem(dataArray, i);
-                return;
+                rewriteInprogressWithoutItem(dataArray, i);
+                return 'match';
             } else {
-                rewriteFileWithoutItem(dataArray, i);
+                rewriteInprogressWithoutItem(dataArray, i);
                 return 'discrepancy';
             }
         }
@@ -18,19 +21,27 @@ function matchPreprocessingData(id, currency, amountToProcess) {
     return 'idError';
 }
 
-function parseOrCreateJSON(data) {
+function parseOrCreateJSON(data, srcFile = null) {
     try {
+        console.log(`Parsed: data from ${srcFile}.`)
         return JSON.parse(data);
     } catch (e) {
+        console.log(e);
+        console.log(`Failed to parse: ${srcFile}; returning parsed '[]' after rewriting file at recordTransaction()`);
+        if (srcFile !== null) {
+            fs.writeFileSync(srcFile, '[]', (err) => {
+                if (err) throw err;
+            });
+        }
         return JSON.parse('[]');
     }
 }
 
-function rewriteFileWithoutItem(dataArray, i) {
+function rewriteInprogressWithoutItem(dataArray, i) {
     dataArray = returnArrayWithoutItem(dataArray, i);
     while (dataArray.length > 200) dataArray.pop(); // To prevent file getting too long, limit to 200 in-progress transactions at once!
     const dataStringForSending = JSON.stringify(dataArray);
-    fs.writeFile('./prettypay/records/inProgress.json', dataStringForSending, (err) => {
+    fs.writeFileSync('./prettypay/records/inProgress.json', dataStringForSending, (err) => {
         if (err) throw err;
     });
 }
@@ -43,26 +54,45 @@ function returnArrayWithoutItem(array, i) {
     return array;
 }
 
+function searchForUnprocessedTransactions(dataArray) {
+    let timeLimitPoint = new Date().getTime() - (1000 * 60 * 30); // Gives 30 minutes as minimum time.
+    for (let i = 0; i < dataArray.length; i++) {
+        if (dataArray[i].timePostedAsNumber < timeLimitPoint) {
+            dataArray[i].successful = false;
+            dataArray[i].message = `Transaction preprocessed at ${dataArray[i].timePosted}, but not subsequently processed, for reasons unknown. Transaction removed from in-progress data ${new Date()}.`;
+            recordTransaction(dataArray[i]);
+            rewriteInprogressWithoutItem(dataArray, i);
+            i--;
+        }
+    }
+}
+
 function recordTransaction(responseObject) {
+    console.log('**recordTransaction() is beginning**')
     if (responseObject.successful === true) {
         fileToRecordIn = './prettypay/records/transactions.json';
     } else {
         fileToRecordIn = './prettypay/records/nontransactions.json';
     }
     try {
-        fs.readFile(fileToRecordIn, function(error, dataInFile) {
+        fs.readFile(fileToRecordIn, function(error, dataInFile) { // Should not be sync as will stall in case of faulty record files.
             if (error) {
+                console.log('error at recordTransaction point 1');
                 console.log(error);
             } else {
                 try {
-                    const dataArray = parseOrCreateJSON(dataInFile);
+                    const dataArray = parseOrCreateJSON(dataInFile, fileToRecordIn);
                     dataArray.unshift(responseObject);
                     while (dataArray.length > 100) dataArray.pop(); // To prevent either file getting too long, 100 records each!
                     const dataStringForSending = JSON.stringify(dataArray);
                     fs.writeFile(fileToRecordIn, dataStringForSending, (err) => {
-                        if (err) throw err;
+                        if (err) {
+                            console.log('error at recordTransaction point 2');
+                            throw err;
+                        }
                     });
                 } catch (error) {
+                    console.log('error at recordTransaction point 3');
                     console.log(error);
                 }
             }
@@ -75,11 +105,12 @@ function recordTransaction(responseObject) {
 function preprocessData(currentTransaction, dataInFile) {
     let dataArray = parseOrCreateJSON(dataInFile);
     dataArray.unshift(currentTransaction);
-    while (dataArray.length > 200) dataArray.pop(); // To prevent file getting too long, 200 in-progress transactions!
+    while (dataArray.length > 200) dataArray.pop(); // To prevent file getting too long, 200 in-progress transactions! Seems generous.
     const dataStringForSending = JSON.stringify(dataArray);
-    fs.writeFile('./prettypay/records/inProgress.json', dataStringForSending, (err) => {
+    fs.writeFileSync('./prettypay/records/inProgress.json', dataStringForSending, (err) => {
         if (err) throw err;
     });
+    searchForUnprocessedTransactions(dataArray);
 }
 
 function checkCardExpiry(input) {
@@ -143,10 +174,10 @@ function prepareDataToReport(filename) {
     let data;
     try {
         data = fs.readFileSync(`./prettypay/records/${filename}`);
-        data = parseOrCreateJSON(data);
+        data = parseOrCreateJSON(data, filename);
     } catch (error) {
         data = [{"Note": "There are currently no historic data available here."}];
-        fs.writeFile(`./prettypay/records/${filename}`, '[]', (err) => {
+        fs.writeFileSync(`./prettypay/records/${filename}`, '[]', (err) => {
             if (err) throw err;
         });
     }

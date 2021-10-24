@@ -6,6 +6,14 @@ router.get('/', (req, res) => {
     res.render('home');
 })
 
+// router.get('/accepted/:id', (req, res) => {
+//     res.render('accepted', {
+//         id: req.params.id,
+//         amount: null,
+//         currency: null
+//     });
+// })
+
 router.get('/accepted/:id/:amount/:currency', (req, res) => {
     res.render('accepted', {
         id: req.params.id,
@@ -41,6 +49,7 @@ router.post('/initiatePayment', function(req, res) {
 
 // let transaction;
 // router.post('/prettypay_post', function(req, res) {
+//     console.log('/prettypay_post at parent router');
 //     transaction = req.body.transaction;
 //     console.log(transaction);
 //     res.end();

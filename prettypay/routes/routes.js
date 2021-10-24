@@ -11,6 +11,7 @@ const {
     formatNumberToString,
     preprocessData,
     prepareDataToReport,
+    parseOrCreateJSON
 } = require('../javascripts/utils.js');
 
 // let latestResponse = null;
@@ -67,39 +68,39 @@ router.post('/process', async function(req, res) {
     if (amountToProcess <= 0) {
         responseObject.devMessage = `${abortMessage}: total charge of ${req.body.bodyamountToProcess} is not greater than zero.`;
         responseObject.customerMessage = `The total charge of ${req.body.bodyamountToProcess} is not greater than zero.`;
-        recordTransaction(responseObject);
-        res.status(401).json(responseObject);
+        handleRejectedTransaction(res, responseObject, req.body.prettypayPostPath);
+        return;
     } else if (isNaN(amountToProcess)) {
         responseObject.devMessage = `${abortMessage}: ${req.body.bodyamountToProcess} cannot be processed as an amount.`;
         responseObject.customerMessage = `Error: Prettypay has not received a recognisable amount to process.`;
-        recordTransaction(responseObject);
-        res.status(401).json(responseObject);
+        handleRejectedTransaction(res, responseObject, req.body.prettypayPostPath);
+        return;
     } else if (checkCardExpiry(req.body.expiryString) !== 'good') {
         responseObject.devMessage = `${abortMessage}: Expiry received: ${req.body.expiryString}; ${checkCardExpiry(req.body.expiryString)}`;
         responseObject.customerMessage = `${checkCardExpiry(req.body.expiryString)}`;
-        recordTransaction(responseObject);
-        res.status(401).json(responseObject);
+        handleRejectedTransaction(res, responseObject, req.body.prettypayPostPath);
+        return;
     }
 
     const matchAttempt = await matchPreprocessingData(uniqueTransactionReference, currency, amountToProcess);
-    console.log(`matchAttempt: ${matchAttempt}`);
+    // console.log(`matchAttempt: ${matchAttempt}`);
 
     if (matchAttempt === 'discrepancy') {
         const discrepancyMessage = 'There appears to be a discrepancy between amount & currency data received at preprocessing and corresponding data received at processing. You may wish to try again.'
         responseObject.devMessage = `${abortMessage}: ${discrepancyMessage}`;
         responseObject.customerMessage = `${discrepancyMessage}`;
-        recordTransaction(responseObject);
-        res.status(401).json(responseObject);
+        handleRejectedTransaction(res, responseObject, req.body.prettypayPostPath);
+        return;
     } else if (matchAttempt === 'idError') {
         responseObject.devMessage = `${abortMessage}: There does not seem to be a transaction with this unique identity recorded at the backend as having been initiated.`;
         responseObject.customerMessage = `There appears to be a problem with the transaction. You may wish to try again.`;
-        recordTransaction(responseObject);
-        res.status(401).json(responseObject);
+        handleRejectedTransaction(res, responseObject, req.body.prettypayPostPath);
+        return;
     } else if (req.body.currency === '€') {
         responseObject.devMessage = `${abortMessage}: Euro transactions forbidden.`;
         responseObject.customerMessage = '<p style="text-align: center">Prettypay does not accept euros.<br>🇬🇧&nbsp;God Save the Queen!&nbsp;🇬🇧</p>';
-        recordTransaction(responseObject);
-        res.status(401).json(responseObject);
+        handleRejectedTransaction(res, responseObject, req.body.prettypayPostPath);
+        return;
     } else {
         responseObject.successful = true; // Very important line!
         responseObject.devMessage = `Successful fictional purchase processed by Prettypay backend; total charge of ${amountToProcess}.`;
@@ -109,6 +110,12 @@ router.post('/process', async function(req, res) {
         res.status(200).json(responseObject);
     }
 })
+
+function handleRejectedTransaction(res, responseObject, prettypayPostPath = null) {
+    recordTransaction(responseObject);
+    postToParent(responseObject, prettypayPostPath);
+    res.status(401).json(responseObject);
+}
 
 function postToParent(responseObject, pathToPostToParent) {
     if (pathToPostToParent === null) return;
@@ -137,6 +144,20 @@ router.get('/report', function(req, res) {
     // __dirname would go from this routes directory, 
     // while (require('path').resolve(__dirname, '..') gives me the directory above it.
 })
+
+//returnTransaction route untested, consider whether useful anyway.
+router.get('/returnTransaction/:uniqueTransactionReference', function(req, res) {
+    let responseObject = 'transaction not found';
+    let uniqueTransactionReference = req.params.uniqueTransactionReference;
+    const dataInFile = fs.readFileSync('./prettypay/records/transactions.json');
+    dataArray = parseOrCreateJSON(dataInFile, './prettypay/records/transactions.json');
+    for (let i = 0; i < dataArray.length; i++) {
+        if (dataArray[i].uniqueTransactionReference === uniqueTransactionReference) {
+            responseObject = dataArray[i];
+        }
+    }
+    res.status(200).json(responseObject);
+});
 
 // router.get('/responseData', async (req, res) => {
 //     dataReadyToSend =  JSON.stringify(latestResponse);

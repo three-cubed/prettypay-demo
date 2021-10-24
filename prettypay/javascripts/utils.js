@@ -7,7 +7,7 @@ function matchPreprocessingData(id, currency, amountToProcess) {
     // console.log('dataArray');
     // console.log(dataArray);
     for (let i = 0; i < dataArray.length; i++) {
-        console.log(`dataArray[i].uniqueTransactionReference === id? ${dataArray[i].uniqueTransactionReference === id}`);
+        // console.log(`dataArray[i].uniqueTransactionReference === id? ${dataArray[i].uniqueTransactionReference === id}`);
         if (dataArray[i].uniqueTransactionReference === id) {
             if (dataArray[i].currency === currency && parseFloat(dataArray[i].amount) === parseFloat(amountToProcess)) {
                 rewriteInprogressWithoutItem(dataArray, i);
@@ -23,7 +23,7 @@ function matchPreprocessingData(id, currency, amountToProcess) {
 
 function parseOrCreateJSON(data, srcFile = null) {
     try {
-        console.log(`Parsed: data from ${srcFile}.`)
+        // console.log(`Parsed: data from ${srcFile}.`)
         return JSON.parse(data);
     } catch (e) {
         console.log(e);
@@ -68,7 +68,7 @@ function searchForUnprocessedTransactions(dataArray) {
 }
 
 function recordTransaction(responseObject) {
-    console.log('**recordTransaction() is beginning**')
+    // console.log('** recordTransaction() is beginning **');
     if (responseObject.successful === true) {
         fileToRecordIn = './prettypay/records/transactions.json';
     } else {
@@ -185,4 +185,4 @@ function prepareDataToReport(filename) {
     return data
 }
 
-module.exports = { matchPreprocessingData, recordTransaction, checkCardExpiry, generateUUID, formatNumberToString, preprocessData, prepareDataToReport };
+module.exports = { matchPreprocessingData, recordTransaction, checkCardExpiry, generateUUID, formatNumberToString, preprocessData, prepareDataToReport, parseOrCreateJSON };

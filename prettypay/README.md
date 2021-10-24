@@ -48,9 +48,9 @@ Note that both `Prettypay.setSuccessFunction()` and `Prettypay.setNotSuccessFunc
 
 Neither `Prettypay.setSuccessFunction()` nor `Prettypay.setNotSuccessFunction()` need be set. If, at a certain stage in your code, you wish to nullify the functions set previously, use a `null` argument (see function examples (1)(b) below).<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.postTransaction( `*Absolute URL*` )` ...will post information on the outcome of a transaction that did reach the payment form stage.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.postTransaction( `*Absolute URL*` )` ...will post to your router, on the route of the specified URL, on the outcome of a transaction that did reach the payment form stage. The post will occur at the successful or unsuccessful conclusion of the transaction.<br>
 
-You may wish to pay attention to timing this to get the information you want. `Prettypay.postTransaction()` might well follow a  `Prettypay.open()` function (see function examples (2) below). The user chooses how to handle this post on their routes page (see function examples (3) below).<br>
+You may wish to pay attention to timing this to get the information you want. `Prettypay.postTransaction()` might well follow a  `Prettypay.open()` function (see function examples (2) below) to inform the router of the outcome of that transaction. The user then chooses how to handle this post on their routes page (see function examples (3) below).<br>
 <br>
 
 ## Function examples

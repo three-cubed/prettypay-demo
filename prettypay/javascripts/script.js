@@ -28,6 +28,8 @@ let doIfSuccessfulPP = null;
 let doIfNotSuccessfulPP = null;
 let dataForFollowupFunctionPP;
 
+// Prettypay.returnTransaction is untested.
+
 const Prettypay = {
     open: function(amount, { prefill = false, currency = '£', askAddress = true, askEmail = true } = {}) {
         closeAnyModals();
@@ -78,11 +80,11 @@ const Prettypay = {
     setNotSuccessFunction: function(functionSet) {
         doIfSuccessfulPP = functionSet;
     },
-    // latest: function() {
-    //     fetch('/prettypay/responseData')
-    //     .then(response => response.json())
-    //     .then(data => console.log(data));
-    // }
+    returnTransaction: async function(reference) {
+        let data = await fetch(`/prettypay/returnTransaction/${reference}`)
+        let JSON = await data.json();
+        return JSON;
+    }
 }
 
 function prefillpaymentFormPP() {
@@ -170,10 +172,9 @@ function closeModal(modal) {
     modal.classList.remove('active');
     if (modal === paymentModalPP) paymentFormPP.reset();
     overlayPP.classList.remove('active');
-    // The part below temporary! Should only be on specific modal closing.
 }
 
-function processPayment() {
+function processPayment() { // This is the function which works on submission of the form.
     const amountToProcessPP = parseFloat(totalOnModal.innerText.replace(',', ''));
     const expiryStringPP = paymentCardExpiryPP.value;
     const currencyPP = currencyOnModalPP.innerText;

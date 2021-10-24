@@ -45,7 +45,8 @@ function startPay() {
             Prettypay.setSuccessFunction((data) => {
                 console.log('success function arrow function fired');
                 // console.log(data);
-                // window.location.href = `/accepted/${data.uniqueTransactionReference}/${data.amountToProcess}/${data.currency}`
+                // window.location.href = `/accepted/${data.uniqueTransactionReference}`;
+                window.location.href = `/accepted/${data.uniqueTransactionReference}/${data.amountToProcess}/${data.currency}`;
             });
         } else {
             Prettypay.abort('Aborted by parent directory as demo (not prettypay directory).<br><br>Example acceptance criterion of the parent directory\'s routes.js (odd number) not met.<br><br>This example optional message passed to Prettypay.abort() by parent directory\'s scripts.js.');

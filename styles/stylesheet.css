@@ -1,3 +1,38 @@
 * {
     color: blue;
 }
+
+a, a:visited {
+    text-decoration: none !important;
+}
+
+#buyBtnDiv {
+    display: flex;
+    justify-content: center;
+}
+
+.centredText {
+    text-align: center;
+}
+
+.emphatic {
+    background-color: yellow;
+}
+
+#item-quantity-input {
+    height: 30px;
+    font-size: 25px;
+    max-width: 80px;
+}
+
+#mainText{
+     font-size: 20px;
+}
+
+#buyBtn, #price-to-pay, #price-to-pay-span {
+    font-size: 30px;
+}
+
+#btnToHome, #buyBtn, #inputDiv, #price-to-pay, #price-to-pay-span {
+    margin: 22px;
+}

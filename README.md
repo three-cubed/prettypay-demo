@@ -1,4 +1,4 @@
-This basic directory exists to demonstrate Prettypay, a payment processor simulation for developers. In line with this purpose, the parent directory is intentionally simple and underdeveloped.
+This basic directory exists to demonstrate Prettypay, a payment processor simulation for developers. In line with this purpose, the parent directory is intentionally simplistic and underdeveloped.
 
 Prettypay is a payment processor simulation for developers. Prettypay is added as a separate directory within the overall directory.
 

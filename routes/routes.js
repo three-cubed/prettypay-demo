@@ -6,14 +6,6 @@ router.get('/', (req, res) => {
     res.render('home');
 })
 
-// router.get('/accepted/:id', (req, res) => {
-//     res.render('accepted', {
-//         id: req.params.id,
-//         amount: null,
-//         currency: null
-//     });
-// })
-
 router.get('/accepted/:id/:amount/:currency', (req, res) => {
     res.render('accepted', {
         id: req.params.id,
@@ -21,6 +13,14 @@ router.get('/accepted/:id/:amount/:currency', (req, res) => {
         currency: req.params.currency
     });
 })
+
+// router.get('/accepted/:id', (req, res) => {
+//     res.render('accepted', {
+//         id: req.params.id,
+//         amount: null,
+//         currency: null
+//     });
+// })
 
 router.post('/initiatePayment', function(req, res) {
     const totalToCharge = req.body.total;

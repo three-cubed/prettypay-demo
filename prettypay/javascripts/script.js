@@ -130,9 +130,12 @@ function addEventListenersAndResetForm() {
 
     paymentFormPP.reset();
 
-    overlayPP.addEventListener('click', () => {
-        closeAnyModals();
-    })
+    // If you choose to allow the overlay to be clicked to close the modals,
+    // ensure you add code to fire the doIfSuccessfulPP() and doIfNotSuccessfulPP() functions as appropriate.
+
+    // overlayPP.addEventListener('click', () => {
+    //     closeAnyModals();
+    // })
 
     closeModalButtonsPP.forEach(button => {
         const newId = `${button.parentElement.parentElement.id}-close-button`

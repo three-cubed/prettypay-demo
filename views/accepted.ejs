@@ -4,20 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Successful</title>
-    <script defer src="../javascripts/accepted.js"></script>
+    <link rel="stylesheet" href="/styles/stylesheet.css">
+    <script defer src="/javascripts/accepted.js"></script>
     <script>
         const uniqueTransactionReference = `<%= id %>`
     </script>
 </head>
-<body>
-    Transaction successful!
+<body class='centredText'>
+
     <br>
-    <h3>Payment details from Prettypay</h3>
+
+    Transaction successful!
+
+    <h3>The parent site has received details from Prettypay and is displaying them here:</h3>
     <% if (currency && amount) { %>
         <p><%= currency %>&nbsp;<%= amount %> debited to your account.</p>
     <% } %>
+
     <p>Unique transaction reference: <%= id %></p>
+
     <br>
-    <button><a href='/'>Return to home page.</a></button>
+
+    <p>If you wish, you can type in the URL __dirname + /prettypay/report, and Prettypay will report the various transactions currently in its records.</p>
+
+    <br>
+
+    <div id='buyBtnDiv'>
+        <button id='btnToHome'><a href='/'>Return to home page.</a></button>
+    </div>
+
 </body>
 </html>

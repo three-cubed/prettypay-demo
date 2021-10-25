@@ -1,10 +1,9 @@
-<!-- For deployment, change regex pattern on form where indicated! -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/stylesheet.css">
+    <link rel="stylesheet" href="/styles/stylesheet.css">
     <script defer src="javascripts/script.js"></script>
     <title>Home page</title>
 </head>
@@ -12,22 +11,46 @@
     
     <%- include('../prettypay/views/view.ejs')%>
 
-    <h2>Home page</h2>
-    <input type="button" value="Click me to log in the console!" onclick="console.log('Clicked!')"><br>
-    <h3>Welcome to This page!</h3>
-    <p>
-        This is a simple website designed to provide a scaffold in which to showcase the Prettypay package.
-    </p>
-    <div class="item-quantity basket-column">
-        <input id="item-quantity-input" type="number" value="1">
+    <h1 class='centredText'>Welcome to the example website!</h1>
+
+    <h3 class='centredText'>(Prettypay demonstration)</h3>
+
+    <div id='mainText'>
+        <p>
+            This basic directory exists to demonstrate Prettypay, a payment processor simulation for developers.
+            In line with this purpose, the parent directory is<span class='emphatic'> intentionally simplistic and underdeveloped. </span>
+        </p>
+        <p>
+            Prettypay is a payment processor simulation for developers. It is added as a separate directory within the overall directory.
+        </p>
+        <p>
+            To see Prettypay in action, select an amount and try to buy!
+            As a demonstration, the parent directory code asks Prettypay to reject payments of even numbers.
+        </p>
+        <p>
+            For more information about prettypay and how to use it, read README.md in the Prettypay directory itself.
+            You are free to use Prettypay non-commercially. For further information, please see LICENCE.md in the Prettypay directory.
+        </p>
+
+        <div id='inputDiv' class='centredText'>
+            Select your quantity @ £1 per item.
+            <input id="item-quantity-input" type="number" value="1">
+        </div>
+
     </div>
+
     <br>
-    <div>
-        £ <span id='price-to-pay'>1</span>
+
+    <div class='centredText'>
+        <span id='price-to-pay-span' class='emphatic'>
+            Total price: £ <span id='price-to-pay'>1</span>
+        </span>
     </div>
     <br>
 
-    <button id='buyBtn'>Buy</button>
+    <div id='buyBtnDiv'>
+        <button id='buyBtn'>Buy</button>
+    </div>
 
 </body>
 </html>

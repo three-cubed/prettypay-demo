@@ -41,7 +41,7 @@ form input {
     border: 3px solid black;
     border-radius: 10px;
     overflow: hidden;
-    z-index: 100;
+    z-index: 2147483647;
     background-color: white;
     width: 500px;
     max-width: 94%;
@@ -96,6 +96,7 @@ form input {
 }
 
 #overlay-pp {
+    z-index: 2147483646;
     position: fixed;
     opacity: 0;
     transition: 200ms ease-in-out;

@@ -12,8 +12,10 @@ const abortTransactionOptionalMessageSpanPP = document.getElementById('transacti
 const successfulTransactionModalPP = document.getElementById('transaction-successful-modal');
 const successfulTransactionOptionalMessageSpanPP = document.getElementById('transaction-successful-optional-message-span');
 
-const contactPostalAddressPP = document.getElementById('payment-contact-postal-address').parentElement;
-const contactEmailPP = document.getElementById('payment-contact-email').parentElement;
+const contactPostalAddressPP = document.getElementById('payment-contact-postal-address');
+const contactEmailPP = document.getElementById('payment-contact-email');
+let askAddressPP = true;
+let askEmailPP = true;
 
 let uniqueTransactionReferencePP;
 
@@ -37,16 +39,23 @@ const Prettypay = {
         if (amount <= 0) {
             Prettypay.abort('Error: The total charged is zero or less.');
         } else {
-            if (askAddress === false) {
-                contactPostalAddressPP.classList.add('invisiblePP');
-                // document.getElementById('payment-contact-postal-address').required = false;
+            if (askAddress === true) {
+                contactPostalAddressPP.parentElement.classList.remove('invisiblePP');
+                askAddressPP = true;
+            } else {
+                contactPostalAddressPP.parentElement.classList.add('invisiblePP');
+                askAddressPP = false;
                 document.getElementById('payment-contact-postal-address').value= 'not requested';
             }
-            if (askEmail === false) {
-                contactEmailPP.classList.add('invisiblePP');
-                // document.getElementById('payment-contact-email').required = false;
+            if (askEmail === true) {
+                contactEmailPP.parentElement.classList.remove('invisiblePP');
+                askEmailPP = true;
+            } else {
+                contactEmailPP.parentElement.classList.add('invisiblePP');
+                askEmailPP = false;
                 document.getElementById('payment-contact-email').value = 'not requested';
             }
+
             openpaymentFormPP(amount, currency);
             if (autofill === true) autofillpaymentFormPP();
             preprocessPayment(amount, currency);
@@ -92,8 +101,8 @@ const Prettypay = {
 function autofillpaymentFormPP() {
     document.getElementsByClassName('text-in-modal')[0].innerHTML = 'This is the pre-filled version, for your convenience.<br>Just click the button!';
     document.getElementById('payment-contact-name').value = 'Adam Smith';
-    if (askAddress) document.getElementById('payment-contact-postal-address').value= '10 High Road, Brighton, BN1, 1AA';
-    if (askEmail) document.getElementById('payment-contact-email').value = 'asmith@email.com';
+    if (askAddressPP) document.getElementById('payment-contact-postal-address').value= '10 High Road, Brighton, BN1, 1AA';
+    if (askEmailPP) document.getElementById('payment-contact-email').value = 'asmith@email.com';
     document.getElementById('payment-card-name').value = 'Mr A Smith';
     document.getElementById('payment-card-number').value = '4242 4242 4242 4242';
     document.getElementById('payment-card-expiry').value = '10/25';

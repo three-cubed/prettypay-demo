@@ -60,7 +60,9 @@ router.post('/process', async function(req, res) {
         currency: currency,
         amountToProcess: amountToProcess,
         uniqueTransactionReference: uniqueTransactionReference,
+        cardName: req.body.cardName,
         contactName: req.body.contactName,
+        contactPostalAddress: req.body.contactPostalAddress,
         contactEmail: req.body.contactEmail,
         customerMessage: ''
     };

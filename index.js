@@ -11,6 +11,6 @@ const prettypayRouter = require('./prettypay/routes/routes');
 app.use('/', router);
 app.use('/prettypay', prettypayRouter);
 
-app.listen(process.env.port||3030, () => {
+app.listen(process.env.PORT||3030, () => {
     console.log('listening to 3030');
 });

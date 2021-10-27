@@ -11,8 +11,18 @@ a, a:visited {
     justify-content: center;
 }
 
-.centredText {
+.centred {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.edgedBox {
+    border: solid 2px lightskyblue;
+    border-radius: 4%;
+    width: 600px;
+    max-width: 95%;
+    align-self: center;
 }
 
 .emphatic {

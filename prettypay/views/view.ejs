@@ -7,7 +7,7 @@
 <script defer src="../prettypay/javascripts/script.js"></script>
 
 <div class="modal" id="payment-modal">
-    <%- include ('./modal-top.ejs') %>
+    <%- include ('./partials/modal-top.ejs') %>
     <div class="modal-body">
         <br>
         <span class="text-in-modal">This is fake. Please do not enter real card data.</span>
@@ -62,29 +62,29 @@
             <!-- Amazon uses Buy Now, ebay uses Confirm and Pay -->
             <br>
             </form>
-            <%- include ('./copyright-fragment.ejs') %> 
+            <%- include ('./partials/copyright-fragment.ejs') %>
     </div>
 </div>
 
 <div class="modal" id="transaction-aborted-modal">
-    <%- include ('./modal-top.ejs') %>
+    <%- include ('./partials/modal-top.ejs') %>
     <div class="modal-body">
         <br>
         <strong class='warning'>⚠️&emsp;The transaction has been aborted.</strong>
         <span id='transaction-aborted-optional-message-span'></span>
         <br>
-        <%- include ('./copyright-fragment.ejs') %>
+        <%- include ('./partials/copyright-fragment.ejs') %>
     </div>
 </div>
 
 <div class="modal" id="transaction-successful-modal">
-    <%- include ('./modal-top.ejs') %>
+    <%- include ('./partials/modal-top.ejs') %>
     <div class="modal-body">
         <br>
         <strong>The transaction was sucessful.</strong>
         <span id='transaction-successful-optional-message-span'></span>
         <br>
-        <%- include ('./copyright-fragment.ejs') %>
+        <%- include ('./partials/copyright-fragment.ejs') %>
     </div>
 </div>
 

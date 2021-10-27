@@ -27,7 +27,7 @@ function parseOrCreateJSON(data, srcFile = null) {
         return JSON.parse(data);
     } catch (e) {
         console.log(e);
-        console.log(`Failed to parse at parseOrCreateJSON(): ${srcFile}; returning parsed '[]' after rewriting file.`);
+        console.log(`Could not parse with parseOrCreateJSON() at ${srcFile}; solving by returning parsed '[]' after rewriting file.`);
         if (srcFile !== null) {
             fs.writeFileSync(srcFile, '[]', (err) => {
                 if (err) throw err;

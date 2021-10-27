@@ -10,19 +10,21 @@
         const uniqueTransactionReference = `<%= id %>`
     </script>
 </head>
-<body class='centredText'>
+<body class='centred'>
 
     <br>
 
     Transaction successful!
 
     <h3>The parent site has received details from Prettypay and is displaying them here:</h3>
-    <% if (currency && amount) { %>
-        <p><%= currency %>&nbsp;<%= amount %> debited to your account.</p>
-    <% } %>
 
-    <p>Unique transaction reference: <%= id %></p>
+    <div class='edgedBox'>
+        <% if (currency && amount) { %>
+            <p><%= currency %>&nbsp;<%= amount %> debited to your account.</p>
+        <% } %>
 
+        <p>Unique transaction reference: <%= id %></p>
+    </div>
     <br>
 
     <p>If you wish, you can type in the URL __dirname + /prettypay/report, and Prettypay will report the various transactions currently in its records.</p>

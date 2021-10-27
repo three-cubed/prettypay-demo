@@ -107,5 +107,5 @@ To view your Pretttypay data report, detailing your recorded transactions, go to
 <br>
 
 ## Trademark
-Prettypay is not really a registered trademark - It's for effect!<br>
+Prettypay is not really a registered trademark - It's for effect! Nonetheless, check `LICENCE.md` for details of the attribution, non-commercial, no derivative licence.<br>
 <br>

@@ -27,11 +27,13 @@ function parseOrCreateJSON(data, srcFile = null) {
         return JSON.parse(data);
     } catch (e) {
         console.log(e);
-        console.log(`Could not parse with parseOrCreateJSON() at ${srcFile}; solving by returning parsed '[]' after rewriting file.`);
         if (srcFile !== null) {
+            console.log(`Could not parse with parseOrCreateJSON() from ${srcFile}; solving by rewriting file and returning parsed '[]'.`);
             fs.writeFileSync(srcFile, '[]', (err) => {
                 if (err) throw err;
             });
+        } else {
+            console.log("Could not parse with parseOrCreateJSON(); solving issue by returning parsed '[]'.");
         }
         return JSON.parse('[]');
     }

@@ -31,7 +31,7 @@ let dataForFollowupFunctionPP;
 // Prettypay.returnTransaction is untested.
 
 const Prettypay = {
-    open: function(amount, { prefill = false, currency = '£', askAddress = true, askEmail = true } = {}) {
+    open: function(amount, { autofill = false, currency = '£', askAddress = true, askEmail = true } = {}) {
         closeAnyModals();
         paymentFormPP.reset();
         if (amount <= 0) {
@@ -39,14 +39,16 @@ const Prettypay = {
         } else {
             if (askAddress === false) {
                 contactPostalAddressPP.classList.add('invisiblePP');
-                contactPostalAddressPP.setAttribute("required", "");
+                // document.getElementById('payment-contact-postal-address').required = false;
+                document.getElementById('payment-contact-postal-address').value= 'not requested';
             }
             if (askEmail === false) {
                 contactEmailPP.classList.add('invisiblePP');
-                contactPostalAddressPP.setAttribute("required", "")
+                // document.getElementById('payment-contact-email').required = false;
+                document.getElementById('payment-contact-email').value = 'not requested';
             }
             openpaymentFormPP(amount, currency);
-            if (prefill === true) prefillpaymentFormPP();
+            if (autofill === true) autofillpaymentFormPP();
             preprocessPayment(amount, currency);
         }
     },
@@ -87,11 +89,11 @@ const Prettypay = {
     }
 }
 
-function prefillpaymentFormPP() {
+function autofillpaymentFormPP() {
     document.getElementsByClassName('text-in-modal')[0].innerHTML = 'This is the pre-filled version, for your convenience.<br>Just click the button!';
     document.getElementById('payment-contact-name').value = 'Adam Smith';
-    document.getElementById('payment-contact-postal-address').value= '10 High Road, Brighton, BN1, 1AA';
-    document.getElementById('payment-contact-email').value = 'asmith@email.com';
+    if (askAddress) document.getElementById('payment-contact-postal-address').value= '10 High Road, Brighton, BN1, 1AA';
+    if (askEmail) document.getElementById('payment-contact-email').value = 'asmith@email.com';
     document.getElementById('payment-card-name').value = 'Mr A Smith';
     document.getElementById('payment-card-number').value = '4242 4242 4242 4242';
     document.getElementById('payment-card-expiry').value = '10/25';
@@ -182,6 +184,7 @@ function processPayment() { // This is the function which works on submission of
     const expiryStringPP = paymentCardExpiryPP.value;
     const currencyPP = currencyOnModalPP.innerText;
     const contactNamePP = document.getElementById('payment-contact-name').value;
+    const contactPostalAddressPP = document.getElementById('payment-contact-postal-address').value;
     const contactEmailPP = document.getElementById('payment-contact-email').value;
     const cardNamePP = document.getElementById('payment-card-name').value;
     const cardNumPP = document.getElementById('payment-card-number').value;
@@ -199,6 +202,7 @@ function processPayment() { // This is the function which works on submission of
             currency: currencyPP,
             uniqueTransactionReference: uniqueTransactionReferencePP,
             contactName: contactNamePP,
+            contactPostalAddress: contactPostalAddressPP,
             contactEmail: contactEmailPP,
             cardName: cardNamePP,
             cardNum: cardNumPP,

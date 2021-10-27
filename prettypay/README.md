@@ -74,8 +74,8 @@ You may wish to pay attention to timing this to get the information you want. `P
 <br>
 
 ## Prettypay.open() options
-To make the payment form prefill itself for speed of use:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, { prefill: true })`<br>
+To make the payment form autofill itself for speed of use:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, { autofill: true })`<br>
 <br>
 By default, the payment form requests the customer's postal address and email. If you do not wish to request this information, you can use options:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, { askAddress: false })`<br>
@@ -87,7 +87,7 @@ Prettypay uses £ by default, but accepts all currencies except €. To use a di
 If you wish to do so, you can, of course, use more than one option at once, for example:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.open(amount, {`<br>
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`currency:  '¥',`<br>
-&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`prefill: true,`<br>
+&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`autofill: true,`<br>
 &emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`askAddress: false`<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`})`<br>
 <br>

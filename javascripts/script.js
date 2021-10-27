@@ -40,11 +40,10 @@ function startPay() {
         // This feature is in fact superfluous, or at least a double-check, if transactionInitialisationStatus is
         // being used to trigger, or not, the abortTransactionModal.
     }).then(function() {if (transactionInitialisationStatus == 'good') {
-            Prettypay.open(totalToCharge, { prefill: true, askAddress: false });
+            Prettypay.open(totalToCharge, { autofill: true, askAddress: false });
             // Prettypay.postTransaction('http://localhost:3030/prettypay_post');
             Prettypay.setSuccessFunction((data) => {
                 console.log('success function arrow function fired');
-                // console.log(data);
                 // window.location.href = `/accepted/${data.uniqueTransactionReference}`;
                 window.location.href = `/accepted/${data.uniqueTransactionReference}/${data.amountToProcess}/${data.currency}`;
             });

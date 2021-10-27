@@ -123,6 +123,11 @@ form input {
     color: blue;
 }
 
+#process-transaction-prettypay-btn:active {
+    background-color: rgb(236, 236, 1);
+    border: solid rgb(128, 128, 128) 3px;
+}
+
 .reportItem {
     border: 2px solid rgb(60, 60, 60);
     border-radius: 1.5%;

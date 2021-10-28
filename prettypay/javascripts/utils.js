@@ -175,8 +175,9 @@ function formatNumberToString(number) {
 function prepareDataToReport(filename) {
     let data;
     try {
-        data = fs.readFileSync(`./prettypay/records/${filename}`);
-        data = parseOrCreateJSON(data, filename);
+        filePath = `./prettypay/records/${filename}`;
+        data = fs.readFileSync(filePath);
+        data = parseOrCreateJSON(data, filePath);
     } catch (error) {
         data = [{"Note": "There are currently no historic data available here."}];
         fs.writeFileSync(`./prettypay/records/${filename}`, '[]', (err) => {

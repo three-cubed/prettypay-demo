@@ -14,6 +14,8 @@ router.get('/accepted/:id/:amount/:currency', (req, res) => {
     });
 })
 
+// Simpler version of handling a get request for the /accepted page.
+//
 // router.get('/accepted/:id', (req, res) => {
 //     res.render('accepted', {
 //         id: req.params.id,
@@ -32,7 +34,7 @@ router.post('/initiatePayment', function(req, res) {
         } else {
             const itemsJSON = JSON.parse(itemsData);
             // Router can hypothetically check prices and quantities with the backend at this point.
-
+            // Code to do this would go here. However such code is superfluous for this demo.
             let transactionInitialisationStatus = 'bad';
             if (totalToCharge %2 !== 0) { 
             // Hypothetical acceptance criterion... note that prettypay will have already excluded zero or less.
@@ -47,11 +49,13 @@ router.post('/initiatePayment', function(req, res) {
     })
 })
 
+// Not in use, but below is an example of how a basic route could work for Prettypay.postTransaction();
+//
 // let transaction;
 // router.post('/prettypay_post', function(req, res) {
-//     console.log('/prettypay_post at parent router');
 //     transaction = req.body.transaction;
-//     console.log(transaction);
+//     console.log('/prettypay_post receiving Prettypay.postTransaction() data at parent router')
+//     console.log('transaction');
 //     res.end();
 // })
 

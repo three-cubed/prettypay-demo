@@ -189,7 +189,7 @@ function closeModal(modal) {
 }
 
 function processPayment() { // This is the function which works on submission of the form.
-    const amountToProcessPP = parseFloat(totalOnModal.innerText.replace(',', ''));
+    const amountToProcessPP = parseFloat(totalOnModal.innerText.replace(/,/g, ''));
     const expiryStringPP = paymentCardExpiryPP.value;
     const currencyPP = currencyOnModalPP.innerText;
     const contactNamePP = document.getElementById('payment-contact-name').value;

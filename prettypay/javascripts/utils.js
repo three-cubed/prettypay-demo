@@ -4,10 +4,7 @@ function matchPreprocessingData(id, currency, amountToProcess) {
     const dataInFile = fs.readFileSync('./prettypay/records/inProgress.json');
     // MUST be sync or dataInFile is undefined which messes things up.
     dataArray = parseOrCreateJSON(dataInFile, './prettypay/records/inProgress.json');
-    // console.log('dataArray');
-    // console.log(dataArray);
     for (let i = 0; i < dataArray.length; i++) {
-        // console.log(`dataArray[i].uniqueTransactionReference === id? ${dataArray[i].uniqueTransactionReference === id}`);
         if (dataArray[i].uniqueTransactionReference === id) {
             if (dataArray[i].currency === currency && parseFloat(dataArray[i].amount) === parseFloat(amountToProcess)) {
                 rewriteInprogressWithoutItem(dataArray, i);
@@ -109,9 +106,11 @@ function preprocessData(currentTransaction, dataInFile) {
     dataArray.unshift(currentTransaction);
     while (dataArray.length > 200) dataArray.pop(); // To prevent file getting too long, 200 in-progress transactions! Seems generous.
     const dataStringForSending = JSON.stringify(dataArray);
-    fs.writeFileSync('./prettypay/records/inProgress.json', dataStringForSending, (err) => {
-        if (err) throw err;
-    });
+    try {
+        fs.writeFileSync('./prettypay/records/inProgress.json', dataStringForSending)
+    } catch (err) {
+
+    }
     searchForUnprocessedTransactions(dataArray);
 }
 
@@ -174,15 +173,17 @@ function formatNumberToString(number) {
 
 function prepareDataToReport(filename) {
     let data;
+    const filePath = `./prettypay/records/${filename}`;
     try {
-        filePath = `./prettypay/records/${filename}`;
         data = fs.readFileSync(filePath);
         data = parseOrCreateJSON(data, filePath);
     } catch (error) {
         data = [{"Note": "There are currently no historic data available here."}];
-        fs.writeFileSync(`./prettypay/records/${filename}`, '[]', (err) => {
-            if (err) throw err;
-        });
+        try {
+            fs.writeFileSync(filePath, '[]')
+        } catch (err) {
+            console.log(err);
+        }
     }
     if (data[0] === undefined) data = [{"Note": "There are currently no relevant data to report."}];
     return data

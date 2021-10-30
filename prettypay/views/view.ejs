@@ -1,16 +1,33 @@
 <!-- The paths for the style import and script source must be in relation to the file in which this view is placed. -->
 
+<% let CSSpath = `'${root}prettypay/styles/stylesheet.css'` %>
+<% let JSpath = `'${root}prettypay/javascripts/script.js'` %>
+
 <style type="text/css">
-    @import url("../prettypay/styles/stylesheet.css");
+    @import url(
+        <%- CSSpath %>
+    );
 </style>
 
-<script defer src="../prettypay/javascripts/script.js"></script>
+<script defer src=
+    <%- JSpath %>
+>
+</script>
+
+<h1 class='invisiblePP'>
+    IF YOU CAN SEE THIS TEXT... the route for the CSS and JS on prettypay/views/view needs to be amended,
+    to fit your root directory's structure.
+    Please amend the root property on the page on which you included Prettypay.
+    See README.md in the Prettypay directory for more information.
+</h1>
+
+<div id="overlay-pp"></div>
 
 <div class="modal" id="payment-modal">
     <%- include ('./partials/modal-top.ejs') %>
     <div class="modal-body">
         <br>
-        <span class="text-in-modal">This is fake. Please do not enter real card data.</span>
+        <span class="text-in-modal">This is fake, but data will be stored.<br>Please do not enter real data or card details.</span>
         <br>
         <form id='payment-form' onsubmit='event.preventDefault(); processPayment();'>
         <!-- Do not forget event.preventDefault() or the page will reload! -->
@@ -87,5 +104,3 @@
         <%- include ('./partials/copyright-fragment.ejs') %>
     </div>
 </div>
-
-<div id="overlay-pp"></div>

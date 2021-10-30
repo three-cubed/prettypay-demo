@@ -99,7 +99,7 @@ const Prettypay = {
 }
 
 function autofillpaymentFormPP() {
-    document.getElementsByClassName('text-in-modal')[0].innerHTML = 'This is the pre-filled version, for your convenience.<br>Just click the button!';
+    document.getElementsByClassName('text-in-modal')[0].innerHTML = 'This is the autofilled version, for your convenience.<br>Just click the button!';
     document.getElementById('payment-contact-name').value = 'Adam Smith';
     if (askAddressPP) document.getElementById('payment-contact-postal-address').value= '10 High Road, Brighton, BN1, 1AA';
     if (askEmailPP) document.getElementById('payment-contact-email').value = 'asmith@email.com';

@@ -1,5 +1,5 @@
 # Prettypay
-### Version 1.0.2
+### Version 1.0.3
 <br>
 Prettypay is a web development tool. It is a moderately simple simulated payment processing system used with javascript and EJS pages. It is designed to be included within the parent directory.
 <br><br>
@@ -15,23 +15,41 @@ In index.js (or whatever you have named the server), you must include the lines:
 This assumes you have called your instance of express.js "app". If not, amend accordingly!
 
 On the appropriate EJS page, on which you wish to fire the payment processor, you must include:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`<%- include('../prettypay/views/view.ejs')%>`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`<%- include('../prettypay/views/view.ejs', { root: `*path to root folder*` }) %>`<br>
+Place this at the bottom of the EJS on the page.<br>
 
 You may then use all the Prettypay functions on any javascript page linked to the EJS page.<br>
+
+NOTE: The `root` property must correctly link the page on which you are placing Prettypay to the root directory in which Prettypay has been placed. This is discussed in the section below entitles 'The Root Property'.
 
 Unless you are sure you will not use `Prettypay.postTransaction()`, you should also install the node-fetch package from NPM, at a version prior to version 3, the most recent available being 2.6.5: `npm install node-fetch@2.6.5`. Versions from 3 onwards will not work.
 <br><br>
 
-## Some potential problems
+## The Root Property
+When you include Prettyapy in a file, using `<%- include('../prettypay/views/view.ejs', { root: `*path to root folder*` }) %>`, the location of that file in the root directory dictates the paths that must be followed in order to access Prettypay's javascript and CSS. This is dealt with using the *root* property.
 
-### Potential path problems
-The file `/prettypay/views/view.ejs` begins with a javascript `script src` tag and a CSS import. These should link to the appropriate javascript and CSS pages in the `/prettypay` directory. 
+For example, let us imagine you wish to use Prettypay in if your project called `my_project_root_dir`.<br>
+You decide to place Prettypay on `pay_page.ejs`.<br>
 
-However, when you include `<%- include('../prettypay/views/view.ejs')%>` in a file, the location of that file in the parent directory and the manner in which it is routed may change the paths that must be followed in order to access Prettypay's javascript and CSS. Note that the paths must be in relation to the location of the file in which the Prettypay view is placed, not the location of the Prettypay view file.
+If, for example, the (simpified) structure of your project is:<br>
 
-Therefore, the javascript `script src` tag and CSS import at the top of `/prettypay/views/view.ejs` have paths which may need amending to fit your file structure.
+&emsp;my_project_root_dir<br>
+&emsp;&emsp;│<br>
+&emsp;&emsp;├── js<br>
+&emsp;&emsp;│&emsp;&emsp;&emsp;├── scripts.js<br>
+&emsp;&emsp;│<br>
+&emsp;&emsp;├── node-modules<br>
+&emsp;&emsp;│<br>
+&emsp;&emsp;├── views<br>
+&emsp;&emsp;│&emsp;&emsp;&emsp;├── pay_page.ejs<br>
+&emsp;&emsp;│<br>
+&emsp;&emsp;└── index.js<br>
 
-### Potential loading order problems
+...then the path from `pay_page.ejs` to the root directory `my_root_project_dir` is `'../'`, so on `pay_page.ejs` you would use:<br>
+
+`<%- include('../prettypay/views/view.ejs', { root: '../' }) %>`
+
+## Potential loading order problems
 As is often the case with javascript functions for frontend pages, you will need to avoid invoking Prettypay functions prior to the loading of the page, or you will get an error such as `Uncaught ReferenceError: Prettypay is not defined`. 
 
 Such errors are unlikely in practical usage, as Prettypay would be linked to some purchase button that will not exist prior to page loading. If, however, you were initially playing with Prettypay by placing a Prettypay function straight into your javascript page, this error might occur.

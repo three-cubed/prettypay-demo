@@ -14,8 +14,6 @@ const {
     parseOrCreateJSON
 } = require('../javascripts/utils.js');
 
-// let latestResponse = null;
-
 router.post('/preprocess', function(req, res) {
     const currentTransaction = req.body;
     // const uniqueTransactionReference = generateUUID();
@@ -160,13 +158,5 @@ router.get('/returnTransaction/:uniqueTransactionReference', function(req, res) 
     }
     res.status(200).json(responseObject);
 });
-
-// router.get('/responseData', async (req, res) => {
-//     dataReadyToSend =  JSON.stringify(latestResponse);
-//     console.log('router re Prettypay.postTransaction()');
-//     console.log(dataReadyToSend);
-//     latestResponse = null; // If wish to make callable once only...
-//     res.status(200).send(dataReadyToSend);
-// })
 
 module.exports = router;

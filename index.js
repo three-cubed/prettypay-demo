@@ -6,9 +6,9 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 
 const router = require('./routes/routes');
-const prettypayRouter = require('./prettypay/routes/routes');
-
 app.use('/', router);
+
+const prettypayRouter = require('./prettypay/routes/routes');
 app.use('/prettypay', prettypayRouter);
 
 app.listen(process.env.PORT||3030, () => {

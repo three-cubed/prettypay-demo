@@ -1,11 +1,11 @@
 # Prettypay
-### Version 1.0.3
+### Version 1.0.3.1
 <br>
-Prettypay is a web development tool. It is a moderately simple simulated payment processing system used with javascript and EJS pages. It is designed to be included within the parent directory.
+Prettypay is a web development tool. It is a moderately simple simulated payment processing system used with javascript and EJS pages. It is designed to be included within the root/parent directory of a project.
 <br><br>
 
 ## To use
-First, the Prettypay directory must be cloned and placed in the parent file that you wish to use it in.<br>
+First, the Prettypay directory must be cloned and placed in the root/parent directory that you wish to use it in.<br>
 
 You will presumably not wish to retain the transaction records of the directory which you cloned, so if applicable, you can delete all information **within** each file in prettypay/records (do not delete the files themselves!).<br>
 
@@ -45,9 +45,10 @@ If, for example, the (simpified) structure of your project is:<br>
 &emsp;&emsp;│<br>
 &emsp;&emsp;└── index.js<br>
 
-...then the path from `pay_page.ejs` to the root directory `my_root_project_dir` is `'../'`, so on `pay_page.ejs` you would use:<br>
+...then the path from `pay_page.ejs` to the root directory `my_project_root_dir` is `'../'`, so on `pay_page.ejs` you would use:<br>
 
 `<%- include('../prettypay/views/view.ejs', { root: '../' }) %>`
+<br><br>
 
 ## Potential loading order problems
 As is often the case with javascript functions for frontend pages, you will need to avoid invoking Prettypay functions prior to the loading of the page, or you will get an error such as `Uncaught ReferenceError: Prettypay is not defined`. 
@@ -63,13 +64,13 @@ Prettypay functions are used in javascript source for the EJS page:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.setSuccessFunction( `*Function to perform on successful completion of transaction*` )`<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.setNotSuccessFunction( `*Function to perform on abortion of transaction*` )` ...for unsuccessful transactions that did reach the payment form stage.<br>
 
-Note that both `Prettypay.setSuccessFunction()` and `Prettypay.setNotSuccessFunction()` provide data from the relevant (un)successful transaction as an argument (see function examples (1) below).<br>
+Note that both `Prettypay.setSuccessFunction()` and `Prettypay.setNotSuccessFunction()` provide data from the relevant (un)successful transaction as an argument (see function example (1) below).<br>
 
-Neither `Prettypay.setSuccessFunction()` nor `Prettypay.setNotSuccessFunction()` need be set. If, at a certain stage in your code, you wish to nullify the functions set previously, use a `null` argument (see function examples (1)(b) below).<br>
+Neither `Prettypay.setSuccessFunction()` nor `Prettypay.setNotSuccessFunction()` need be set. If, at a certain stage in your code, you wish to nullify the functions set previously, use a `null` argument (see function example (1)(b) below).<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`Prettypay.postTransaction( `*Absolute URL*` )` ...will post to your router, on the route of the specified URL, on the outcome of a transaction that did reach the payment form stage. The post will occur at the successful or unsuccessful conclusion of the transaction.<br>
+`Prettypay.postTransaction( `*Absolute URL*` )` will post to your router, on the route of the specified URL, on the outcome of a transaction that did reach the payment form stage. The post will occur at the successful or unsuccessful conclusion of the transaction.<br>
 
-You may wish to pay attention to timing this to get the information you want. `Prettypay.postTransaction()` might well follow a  `Prettypay.open()` function (see function examples (2) below) to inform the router of the outcome of that transaction. The user then chooses how to handle this post on their routes page (see function examples (3) below).<br>
+You may wish to pay attention to timing this to get the information you want. `Prettypay.postTransaction()` might well follow a  `Prettypay.open()` function (see function example (2) below) to inform the router of the outcome of that transaction. The user then chooses how to handle this post on their routes page (see function example (3) below).<br>
 <br>
 
 ## Function examples

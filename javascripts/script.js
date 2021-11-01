@@ -41,7 +41,7 @@ function startPay() {
         // being used to trigger, or not, the abortTransactionModal.
     }).then(function() {if (transactionInitialisationStatus == 'good') {
             Prettypay.open(totalToCharge, { autofill: true, askAddress: false });
-            // Prettypay.postTransaction('http://localhost:3030/prettypay_post');
+            Prettypay.postTransaction('http://localhost:3030/prettypay_post');
             Prettypay.setSuccessFunction((data) => {
                 console.log('success function arrow function fired');
                 priceToPay.innerText = 1;

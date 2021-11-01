@@ -8,8 +8,8 @@ app.use(express.json());
 const router = require('./routes/routes');
 app.use('/', router);
 
-const prettypayRouter = require('./prettypay/routes/routes');
-app.use('/prettypay', prettypayRouter);
+const prettypay = require('prettypay');
+app.use(prettypay);
 
 app.listen(process.env.PORT||3030, () => {
     console.log('listening to 3030');

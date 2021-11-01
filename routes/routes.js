@@ -51,11 +51,10 @@ router.post('/initiatePayment', function(req, res) {
 
 // Not in use, but below is an example of how a basic route could work for Prettypay.postTransaction();
 //
-// let transaction;
 // router.post('/prettypay_post', function(req, res) {
-//     transaction = req.body.transaction;
+//     const transaction = req.body.transaction;
 //     console.log('/prettypay_post receiving Prettypay.postTransaction() data at parent router')
-//     console.log('transaction');
+//     console.log(transaction);
 //     res.end();
 // })
 

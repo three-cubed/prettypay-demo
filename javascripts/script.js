@@ -50,7 +50,7 @@ function startPay() {
                 window.open(`/accepted/${data.uniqueTransactionReference}/${data.amountToProcess}/${data.currency}`);
             });
         } else {
-            Prettypay.refuse('Refused on instructions of parent directory (not Prettypay) as demo.<br><br>Example acceptance criterion of the parent directory\'s routes.js (odd number) not met.<br><br>This example optional message passed to Prettypay.refuse() by parent directory\'s scripts.js.');
+            Prettypay.abort('Aborted by parent directory as demo (not prettypay directory).<br><br>Example acceptance criterion of the parent directory\'s routes.js (odd number) not met.<br><br>This example optional message passed to Prettypay.abort() by parent directory\'s scripts.js.');
         }
     }).catch(function(error) {
         console.error(error);

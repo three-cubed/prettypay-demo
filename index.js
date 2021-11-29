@@ -13,4 +13,5 @@ app.use(prettypay);
 
 app.listen(process.env.PORT||3030, () => {
     console.log('listening to 3030');
+    // If change this, change also URL on automated browser test page.
 });

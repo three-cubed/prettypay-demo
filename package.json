@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --detectOpenHandles",
     "start": "node index.js"
   },
   "author": "",
@@ -12,6 +12,10 @@
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "prettypay": "^2.0.1"
+    "prettypay": "^2.0.3"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "puppeteer": "^12.0.0"
   }
 }

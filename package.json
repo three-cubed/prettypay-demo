@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --forceExit --verbose",
     "start": "node index.js"
   },
   "author": "",
@@ -12,10 +12,10 @@
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "prettypay": "^2.0.5"
+    "prettypay": "^2.0.7"
   },
   "devDependencies": {
     "jest": "^27.4.0",
-    "puppeteer": "^12.0.0"
+    "puppeteer": "^13.2.0"
   }
 }

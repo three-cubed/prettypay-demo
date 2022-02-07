@@ -24,10 +24,10 @@ router.get('/accepted/:id/:amount/:currency', (req, res) => {
 //     });
 // })
 
-router.post('/initiatePayment', function(req, res) {
+router.post('/initiatePayment', (req, res) => {
     const totalToCharge = req.body.total;
     // Router can readfile() to subsequently check prices and quantities with the backend at this point.
-    fs.readFile('items.json', function(error, itemsData) {
+    fs.readFile('items.json', (error, itemsData) => {
         if (error) {
             console.log(error);
             res.status(500).end()
@@ -51,7 +51,7 @@ router.post('/initiatePayment', function(req, res) {
 
 // Not in use, but below is an example of how a basic route could work for Prettypay.postTransaction();
 //
-// router.post('/prettypay_post', function(req, res) {
+// router.post('/prettypay_post', (req, res) => {
 //     const transaction = req.body.transaction;
 //     console.log('/prettypay_post receiving Prettypay.postTransaction() data at parent router')
 //     console.log(transaction);

@@ -8,6 +8,9 @@ Prettypay version 1 was added as a separate directory within the overall directo
 
 You are free to use Prettypay non-commercially. For further information, please see `LICENCE.md` in the Prettypay directory.
 
+*Note that the licence applies to the Prettypay directory itself.*
+*There are no licence restrictions on other code found in the parent directory, which you are free to use, edit, copy, distibute, etc. without attribution or restriction.*
+
 ## Automated browser tests
 
 The programming for this website has automated browser tests using jest and puppeteer.
